@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 通道增益选项 -->
+    <string-array name="channel_gain">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>8</item>
+        <item>16</item>
+        <item>32</item>
+        <item>64</item>
+        <item>128</item>
+    </string-array>
+
+    <!-- 采样率选项 -->
+    <string-array name="sampling_rate">
+        <item>250</item>
+        <item>500</item>
+        <item>1000</item>
+    </string-array>
+
+    <!-- DAC输出值选项 -->
+    <string-array name="dac_output_values">
+        <item>5V</item>
+        <item>2.5V</item>
+        <item>1.25V</item>
+        <item>0.625V</item>
+    </string-array>
+
+    <!-- DAC频率选项 -->
+    <string-array name="dac_frequencies">
+        <item>250Hz</item>
+        <item>125Hz</item>
+        <item>100Hz</item>
+        <item>62.5Hz</item>
+        <item>60Hz</item>
+        <item>55Hz</item>
+        <item>50Hz</item>
+        <item>31.25Hz</item>
+    </string-array>
+</resources>

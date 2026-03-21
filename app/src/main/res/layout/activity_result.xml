@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".ResultActivity">
+
+        <!-- 图表容器 -->
+        <FrameLayout
+            android:id="@+id/chart_container"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_margin="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/table_container"
+            app:layout_constraintHeight_percent="0.7">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart_res"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/background_light" />
+        </FrameLayout>
+
+        <!-- 表格容器 -->
+        <ScrollView
+            android:id="@+id/table_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            app:layout_constraintTop_toBottomOf="@id/chart_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:stretchColumns="*"
+                            android:background="#F5F7FA">
+
+                                <TableRow
+                                    android:background="#3F51B5"
+                                    android:padding="4dp">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="曲线"
+                                            android:textColor="#FFFFFF"
+                                            android:textSize="12sp"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="振幅(I)"
+                                            android:textColor="#FFFFFF"
+                                            android:textSize="11sp"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="振幅误差(error)"
+                                            android:textColor="#FFFFFF"
+                                            android:textSize="11sp"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="相位(mrad)"
+                                            android:textColor="#FFFFFF"
+                                            android:textSize="11sp"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="相位误差(error)"
+                                            android:textColor="#FFFFFF"
+                                            android:textSize="11sp"
+                                            android:textStyle="bold" />
+                                </TableRow>
+
+                                <TableRow
+                                    android:background="#E3F2FD"
+                                    android:padding="4dp">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="I1"
+                                            android:textSize="11sp" />
+
+                                        <TextView
+                                            android:id="@+id/ch1"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textSize="11sp" />
+
+                                        <TextView
+                                            android:id="@+id/che1"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textSize="11sp" />
+
+                                        <TextView
+                                            android:id="@+id/ch_p1"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textSize="11sp" />
+
+                                        <TextView
+                                            android:id="@+id/ch_pe1"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textSize="11sp" />
+                                </TableRow>
+
+                                <TableRow
+                                    android:background="#FFFFFF"
+                                    android:padding="4dp">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="I2"
+                                            android:textSize="11sp" />
+
+                                        <TextView
+                                            android:id="@+id/ch2"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textSize="11sp" />
+
+                                        <TextView
+                                            android:id="@+id/che2"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textSize="11sp" />
+
+                                        <TextView
+                                            android:id="@+id/ch_p2"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textSize="11sp" />
+
+                                        <TextView
+                                            android:id="@+id/ch_pe2"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textSize="11sp" />
+                                </TableRow>
+
+                                <TableRow
+                                    android:background="#E3F2FD"
+                                    android:padding="4dp">
+
+                                        <TextView
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:text="I3"
+                                            android:textSize="11sp" />
+
+                                        <TextView
+                                            android:id="@+id/ch3"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textSize="11sp" />
+
+                                        <TextView
+                                            android:id="@+id/che3"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textSize="11sp" />
+
+                                        <TextView
+                                            android:id="@+id/ch_p3"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textSize="11sp" />
+
+                                        <TextView
+                                            android:id="@+id/ch_pe3"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:textSize="11sp" />
+                                </TableRow>
+                        </TableLayout>
+                </LinearLayout>
+        </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">井下扩频激电接收机</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_paired_device">已配对设备</string>
+    <string name="text_scan_button">扫描新设备</string>
+    <string name="button_start_aquisition">开始采集</string>
+    <string name="button_start_selfcheck">开始自检</string>
+    <string name="button_update_config">更新配置</string>
+    <string name="button_stop_aquisition">停止采集</string>
+
+</resources>

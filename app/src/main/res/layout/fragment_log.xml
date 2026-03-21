@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LogFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="30">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    android:background="@android:color/background_light" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="30">
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    android:background="@android:color/background_light" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="15"
+                android:orientation="vertical">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:stretchColumns="*">
+
+                    <TableRow
+                        android:orientation="horizontal"
+                        android:showDividers="middle">
+
+                        <TextView
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="曲线"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="1dp"
+                            android:gravity="center"
+                            android:text="振幅(I)"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:layout_width="1dp"
+                            android:gravity="center"
+                            android:text="振幅误差(error)"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:layout_width="1dp"
+                            android:gravity="center"
+                            android:text="相位(mrad)"
+                            android:textSize="11sp"/>
+
+                        <TextView
+                            android:layout_width="1dp"
+                            android:gravity="center"
+                            android:text="相位误差(error)"
+                            android:textSize="11sp" />
+
+
+
+                    </TableRow>
+
+                    <TableRow android:showDividers="middle">
+
+                        <TextView
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="I1" />
+
+                        <TextView
+                            android:id="@+id/ch1"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/che1"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/ch_p1"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/ch_pe1"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+
+                    </TableRow>
+
+                    <TableRow android:showDividers="middle">
+
+                        <TextView
+                            android:layout_width="1dp"
+                            android:gravity="center"
+                            android:text="I2" />
+
+                        <TextView
+                            android:id="@+id/ch2"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/che2"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/ch_p2"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/ch_pe2"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+
+                    </TableRow>
+
+                    <TableRow android:showDividers="middle">
+
+                        <TextView
+                            android:layout_width="1dp"
+                            android:gravity="center"
+                            android:text="I3" />
+
+                        <TextView
+                            android:id="@+id/ch3"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/che3"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/ch_p3"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/ch_pe3"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+
+                    </TableRow>
+                    <TableRow android:showDividers="middle">
+
+                        <TextView
+                            android:layout_width="1dp"
+                            android:gravity="center"
+                            android:text="I4" />
+
+                        <TextView
+                            android:id="@+id/ch4"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/che4"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/ch_p4"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/ch_pe4"
+                            android:layout_width="1dp"
+                            android:textSize="11sp"
+                            android:gravity="center" />
+
+
+                    </TableRow>
+
+                </TableLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:visibility="gone"
+                    android:background="#fff">
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="视电阻" />
+
+                    <TextView
+                        android:id="@+id/res_f1"
+                        android:layout_width="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/res_f2"
+                        android:layout_width="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/res_f3"
+                        android:layout_width="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5"
+                android:background="#fff">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="日志信息"
+                    android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/progress_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="visible"
+                    android:layout_gravity="center"
+                    android:textSize="10sp"
+                    android:text="数据量"
+                    />
+                <Button
+                    android:id="@+id/log_button_chart"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="清空日志"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <ScrollView
+                android:id="@+id/log_scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="16">
+
+                <TextView
+                    android:id="@+id/log_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="12sp"/>
+            </ScrollView>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:rowCount="2"
+                android:columnCount="2"
+                android:background="#fff"
+                android:padding="1dp"
+                android:layout_marginTop="5dp">
+
+                <Button
+                    android:id="@+id/controller_button_calibration"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="2dp"
+                    android:padding="1dp"
+                    android:textSize="12sp"
+                    android:text="开始校准" />
+
+                <Button
+                    android:id="@+id/controller_button_selfcheck"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="2dp"
+                    android:padding="1dp"
+                    android:textSize="12sp"
+                    android:text="开始自检" />
+
+                <Button
+                    android:id="@+id/controller_button_aquisition"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="2dp"
+                    android:padding="1dp"
+                    android:textSize="12sp"
+                    android:text="开始采集" />
+
+                <Button
+                    android:id="@+id/controller_button_ground_resistance"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="2dp"
+                    android:padding="1dp"
+                    android:textSize="12sp"
+                    android:text="开始接地电阻测试" />
+
+            </GridLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

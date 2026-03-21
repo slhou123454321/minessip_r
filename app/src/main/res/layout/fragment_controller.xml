@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="2dp"
+    android:background="#DCDCDC">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="1dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- ADC 配置区域 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="3dp"
+                android:padding="10dp"
+                android:background="#fff">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ADC电路"
+                    android:textColor="#696969"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="采样率(SPS)"
+                        android:textSize="14sp"/>
+
+                    <Spinner
+                        android:id="@+id/adc_sampling_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:entries="@array/sampling_rate"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- DAC 配置区域 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:padding="10dp"
+                android:background="#fff">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DAC配置"
+                    android:textColor="#696969"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"/>
+
+                <!-- 通道选择（4通道） -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="通道选择"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:paddingBottom="4dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:id="@+id/dac_channel_1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="通道1"
+                            android:checked="true"/>
+
+                        <CheckBox
+                            android:id="@+id/dac_channel_2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="通道2"/>
+
+                        <CheckBox
+                            android:id="@+id/dac_channel_3"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="通道3"/>
+
+                        <CheckBox
+                            android:id="@+id/dac_channel_4"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="通道4"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- DAC输出幅值 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="DAC输出幅值"
+                        android:textSize="14sp"/>
+
+                    <Spinner
+                        android:id="@+id/dac_value_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:entries="@array/dac_output_values"/>
+                </LinearLayout>
+
+                <!-- DAC输出频率 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="DAC输出频率"
+                        android:textSize="14sp"/>
+
+                    <Spinner
+                        android:id="@+id/dac_frequency_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:entries="@array/dac_frequencies"/>
+                </LinearLayout>
+
+                <!-- DAC输出开关 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="DAC输出"
+                        android:gravity="center_vertical"
+                        android:textSize="14sp"/>
+
+                    <RadioGroup
+                        android:id="@+id/dac_output_switch"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/dac_output_open"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="打开"
+                            android:checked="true"/>
+
+                        <RadioButton
+                            android:id="@+id/dac_output_close"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="关闭"/>
+                    </RadioGroup>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- 低功耗模式区域（独立出来） -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:padding="10dp"
+                android:background="#fff">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="功耗配置"
+                    android:textColor="#696969"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="低功耗模式"
+                        android:textSize="14sp"/>
+
+                    <CheckBox
+                        android:id="@+id/low_power_mode"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="开启"
+                        android:checked="false"/>
+
+                    <Button
+                        android:id="@+id/low_power_apply_button"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="应用"
+                        android:backgroundTint="#FF9800"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 保存参数区域 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#fff"
+                android:layout_marginTop="5dp"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="保存参数"
+                        android:textColor="#696969"
+                        android:textSize="18dp"
+                        android:layout_weight="1"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="请输入文件工区名和数据文件名，若不输入则按当前名称自动生成。"
+                        android:textSize="11sp"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:text="工区名:"/>
+                    <EditText
+                        android:id="@+id/file_name"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:text="默认工区"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:gravity="center"
+                        android:text="-"/>
+                    <EditText
+                        android:id="@+id/file_time"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:text="时间戳"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:text="文件名:"/>
+                    <EditText
+                        android:id="@+id/result_file_name"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:text="defaultData"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 底部统一保存配置按钮 -->
+            <Button
+                android:id="@+id/save_all_config_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:text="保存所有配置"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:backgroundTint="#4CAF50"
+                android:padding="12dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
