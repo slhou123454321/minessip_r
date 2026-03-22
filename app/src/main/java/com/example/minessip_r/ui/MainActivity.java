@@ -32,7 +32,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.minessip_r.Constants;
 import com.example.minessip_r.R;
 import com.example.minessip_r.WifiClientThread;
-import com.example.minessip_r.databinding.ActivityMainBinding;
 import com.example.minessip_r.fragment.ControllerFragment;
 import com.example.minessip_r.fragment.DataFragment;
 import com.example.minessip_r.fragment.LogFragment;
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static int fragmentState = 0;//用来判断当前页面是否为controllerframent，防止更新文件接收进度信息时程序崩溃
 
     public static String configCommend="config/I/1uA/250/b9bf1a/123456/MMS-Data\r\n";
-    private ActivityMainBinding binding;
 
     public final Handler mHandler = new Handler(){
         @RequiresApi(api = Build.VERSION_CODES.N)
@@ -174,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
             serverThread.start();
         }
+        Constants.DATA_DIRECTORY = getExternalFilesDir(null).getAbsolutePath() + "/MineSSIP_R";
     }
 
     private void getpermissions()//运行时权限授权

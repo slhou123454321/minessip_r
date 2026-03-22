@@ -48,17 +48,18 @@ public class WifiClientThread extends Thread{
 
     public static boolean wifiTestFlag = false;
 
-    public WifiClientThread(String ip, Handler handler, MainActivity mainActivity){
+    public WifiClientThread(String ip, Handler handler, MainActivity mainActivity) {
         Log.e("AAA","ClientThread开启");
         this.ip = ip;
         this.handler = handler;
         this.mainActivity=mainActivity;
     }
-
+    boolean test = true;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void run() {
-        while (!stopThreadFlag) {
+        while (!stopThreadFlag && test) {
+            test = false;
             while(!chartFinsh1){
                 Log.e(TAG, "!chartFinsh1");
                 try {
@@ -90,10 +91,29 @@ public class WifiClientThread extends Thread{
             Date date = new Date(System.currentTimeMillis());
             String modfiedTime = formatter.format(date);
             String filePath = ParamSaveClass.workSpacePath ;
+            if (filePath == null || filePath.isEmpty()) {
+                // 使用默认路径
+                filePath = Environment.getExternalStorageDirectory().getPath()
+                        + "/MineSSIP_R/默认工区";
+                Log.w(TAG, "workSpacePath 为空，使用默认路径: " + filePath);
+            }
+
             File file = new File(filePath);
             if (!file.exists()) {
-                file.mkdirs();
+                boolean created = file.mkdirs();
+                if (!created) {
+                    String errorMsg = "无法创建目录: " + filePath;
+                    Log.e(TAG, errorMsg);
+                    handler.obtainMessage(Constants.SET_LOG_MESSAGE, errorMsg + "\r\n").sendToTarget();
+                    // 尝试使用备用目录
+                    filePath = Environment.getExternalStorageDirectory().getPath() + "/MineSSIP_R";
+                    file = new File(filePath);
+                    if (!file.exists()) {
+                        file.mkdirs();
+                    }
+                }
             }
+
             String filename = filePath+ "/" + modfiedTime+ ".dat";
             File saveDataFile = new File(filename);
             BufferedOutputStream bs = null;
@@ -121,8 +141,8 @@ public class WifiClientThread extends Thread{
             }
             try {
                 socket.setSoTimeout(8000);
-                handler.obtainMessage(Constants.SET_LOG_MESSAGE,"发送开始命令：start/"+0+"\r\n").sendToTarget();//嵌入式解析，6/6-1=0
-                sendToBle("start/"+0+ "\r\n");
+                handler.obtainMessage(Constants.SET_LOG_MESSAGE,"发送开始命令：start\r\n").sendToTarget();//嵌入式解析，6/6-1=0
+                sendToBle("start\r\n");
                 inputStream = socket.getInputStream();
                 // todo WiFi自测
                 if (wifiTestFlag) {
@@ -194,11 +214,13 @@ public class WifiClientThread extends Thread{
                     }
                 }
             }catch (SocketTimeoutException e) {
+                handler.obtainMessage(Constants.SET_LOG_MESSAGE, "SocketTimeoutException"+e.getMessage()+"\r\n").sendToTarget();
                 SetResetFile("错误：SocketTimeoutException   ");
                 e.printStackTrace();
                 Log.e(TAG, "run: " + "SocketTimeoutException");
             } catch (IOException e) {
-                Log.e(TAG, "run: " + "IOException e");
+                handler.obtainMessage(Constants.SET_LOG_MESSAGE, "IOException+"+e.getMessage()+"\r\n").sendToTarget();
+                Log.e(TAG, "run: " + "IOException e"+e.getMessage());
                 e.printStackTrace();
             } finally {
                 Log.e(TAG, "finally" );

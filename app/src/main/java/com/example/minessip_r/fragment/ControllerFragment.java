@@ -24,7 +24,6 @@ import androidx.fragment.app.Fragment;
 import com.example.minessip_r.Constants;
 import com.example.minessip_r.ParamSaveClass;
 import com.example.minessip_r.R;
-import com.example.minessip_r.databinding.FragmentControllerBinding;
 import com.example.minessip_r.ui.MainActivity;
 
 import java.util.Date;
@@ -104,7 +103,6 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
     private final String[] dacFrequencyStr = {"250Hz", "125Hz", "100Hz", "62.5Hz", "60Hz", "55Hz", "50Hz", "31.25Hz"};
 
     private MainActivity mainActivity;
-    private FragmentControllerBinding binding;
 
     public ControllerFragment() {
         // Required empty public constructor
@@ -118,8 +116,8 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentControllerBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+        View logLayout = inflater.inflate(R.layout.fragment_controller, container, false);
+        return logLayout;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -223,37 +221,36 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
      * 初始化所有控件
      */
     private void initViews() {
-        View root = binding.getRoot();
 
         // ADC 采样率 Spinner
-        adcSamplingSpinner = root.findViewById(R.id.adc_sampling_spinner);
+        adcSamplingSpinner = mainActivity.findViewById(R.id.adc_sampling_spinner);
 
         // DAC 通道选择 CheckBox
-        dacChannel1 = root.findViewById(R.id.dac_channel_1);
-        dacChannel2 = root.findViewById(R.id.dac_channel_2);
-        dacChannel3 = root.findViewById(R.id.dac_channel_3);
-        dacChannel4 = root.findViewById(R.id.dac_channel_4);
+        dacChannel1 = mainActivity.findViewById(R.id.dac_channel_1);
+        dacChannel2 = mainActivity.findViewById(R.id.dac_channel_2);
+        dacChannel3 = mainActivity.findViewById(R.id.dac_channel_3);
+        dacChannel4 = mainActivity.findViewById(R.id.dac_channel_4);
 
         // DAC 幅值和频率 Spinner
-        dacValueSpinner = root.findViewById(R.id.dac_value_spinner);
-        dacFrequencySpinner = root.findViewById(R.id.dac_frequency_spinner);
+        dacValueSpinner = mainActivity.findViewById(R.id.dac_value_spinner);
+        dacFrequencySpinner = mainActivity.findViewById(R.id.dac_frequency_spinner);
 
         // DAC 输出开关
-        dacOutputSwitch = root.findViewById(R.id.dac_output_switch);
-        dacOutputOpen = root.findViewById(R.id.dac_output_open);
-        dacOutputClose = root.findViewById(R.id.dac_output_close);
+        dacOutputSwitch = mainActivity.findViewById(R.id.dac_output_switch);
+        dacOutputOpen = mainActivity.findViewById(R.id.dac_output_open);
+        dacOutputClose = mainActivity.findViewById(R.id.dac_output_close);
 
         // 低功耗模式
-        lowPowerMode = root.findViewById(R.id.low_power_mode);
-        lowPowerApplyButton = root.findViewById(R.id.low_power_apply_button);
+        lowPowerMode = mainActivity.findViewById(R.id.low_power_mode);
+        lowPowerApplyButton = mainActivity.findViewById(R.id.low_power_apply_button);
 
         // 保存参数输入框
-        fileNameEdit = root.findViewById(R.id.file_name);
-        fileTimeEdit = root.findViewById(R.id.file_time);
-        resultFileNameEdit = root.findViewById(R.id.result_file_name);
+        fileNameEdit = mainActivity.findViewById(R.id.file_name);
+        fileTimeEdit = mainActivity.findViewById(R.id.file_time);
+        resultFileNameEdit = mainActivity.findViewById(R.id.result_file_name);
 
         // 底部保存按钮
-        saveAllConfigButton = root.findViewById(R.id.save_all_config_button);
+        saveAllConfigButton = mainActivity.findViewById(R.id.save_all_config_button);
 
         // 设置默认值
         if (dacChannel1 != null) dacChannel1.setChecked(true);

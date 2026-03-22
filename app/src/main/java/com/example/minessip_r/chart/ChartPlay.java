@@ -35,13 +35,13 @@ public class ChartPlay {
         xaxis.setPosition(XAxis.XAxisPosition.BOTTOM);//x轴底端显示
         xaxis.setLabelCount(count,true);//设置轴标签数量
         xaxis.setDrawGridLines(false);//不显示x轴网格线
-        xaxis.setValueFormatter(new IAxisValueFormatter() {//设置x轴轴标签
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return String.valueOf(((Math.round(value*10))/10)).concat(unitX);
-                //return xList.get((int) value);
-            }
-        });
+//        xaxis.setValueFormatter(new IAxisValueFormatter() {//设置x轴轴标签
+//            @Override
+//            public String getFormattedValue(float value, AxisBase axis) {
+//                return String.valueOf(((Math.round(value*10))/10)).concat(unitX);
+//                //return xList.get((int) value);
+//            }
+//        });
         linechart.getAxisRight().setEnabled(false);//右侧y轴不显示
         YAxis leftYAxis = linechart.getAxisLeft();//设置y轴
         leftYAxis.setLabelCount(4,false);//第一个参数是Y轴坐标的个数，第二个参数是是否不均匀分布，true是不均匀分布
@@ -51,15 +51,15 @@ public class ChartPlay {
         yList.add("10");
         yList.add("100");
         yList.add("1000");
-        leftYAxis.setValueFormatter(new IAxisValueFormatter() {//设置y轴轴标签
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                Log.e(TAG, "----->getFormattedValue: "+value);//"value" represents the position of the label on the axis (x or y)
-                //return yList.get((int)value);
-                //return String.valueOf(((Math.round(Math.pow(10,value)/100))*100)).concat(unitY);
-                return String.valueOf(((Math.round(value*10))/10)).concat(unitY);
-            }
-        });
+//        leftYAxis.setValueFormatter(new IAxisValueFormatter() {//设置y轴轴标签
+//            @Override
+//            public String getFormattedValue(float value, AxisBase axis) {
+//                Log.e(TAG, "----->getFormattedValue: "+value);//"value" represents the position of the label on the axis (x or y)
+//                //return yList.get((int)value);
+//                //return String.valueOf(((Math.round(Math.pow(10,value)/100))*100)).concat(unitY);
+//                return String.valueOf(((Math.round(value*10))/10)).concat(unitY);
+//            }
+//        });
     }
 
     /**

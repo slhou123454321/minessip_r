@@ -31,7 +31,6 @@ import com.example.minessip_r.Constants;
 import com.example.minessip_r.R;
 import com.example.minessip_r.WifiClientThread;
 import com.example.minessip_r.chart.ChartPlay;
-import com.example.minessip_r.databinding.FragmentLogBinding;
 import com.example.minessip_r.ui.MainActivity;
 import com.github.mikephil.charting.charts.LineChart;
 
@@ -56,6 +55,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
     private Button butCarlibration;
     private Button butAquisition;
     private Button butSelfCheck;
+    private Button butGroundResistance;
     private Button butOpenChart;
     private TextView fileSize;
     private TextView[] TV_I=new TextView[3];
@@ -69,7 +69,6 @@ public class LogFragment extends Fragment implements View.OnClickListener {
     private WifiClientThread wifiClientThread;
     private static final String TAG = "LogFragment";
     private ArrayList<String> connectIP;
-    private FragmentLogBinding binding;
 
 
     private Handler handler=new Handler(){
@@ -87,6 +86,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                     buttonUpdateConfigenableState = true;
                     butCarlibration.setEnabled(true);
                     butSelfCheck.setEnabled(true);
+                    butGroundResistance.setEnabled(true);
                     lineChart_1.setTouchEnabled(true);
                     lineChart_2.setTouchEnabled(true);
                     break;
@@ -98,7 +98,27 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                     fileSize.setText(s);
                     break;
                 case Constants.CHANGE_TABLE:
-
+                    Log.e(TAG, "List1="+ChartDataAnalysis.ave.get(0).size()+"  "+ChartDataAnalysis.ave.get(1).size());
+                    Log.e(TAG, "List1="+TV_I.length);
+                    Log.e(TAG,"ChartDataAnalysis.lists1"+ChartDataAnalysis.Curlists.size());
+                    ChartPlay.showLineChart(lineChart_1,ChartDataAnalysis.Curlists.get(0),"电流1", Color.RED,0);
+                    ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(1),"电流2", Color.GREEN ,0);
+                    ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(2),"电流3", Color.BLUE  ,0);
+                    ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(3),"电流4", Color.YELLOW  ,0);
+                    lineChart_1.invalidate();
+                    ChartPlay.initChartView(lineChart_2,3,"","","电流(mA)/通道号");//初始化图表
+                    ChartPlay.showLineChart1(lineChart_2,ChartDataAnalysis.ave.get(0),"电流曲线", Color.CYAN,0);
+                    lineChart_2.invalidate();
+                    for(int i=0;i<3;i++){
+                        Log.e(TAG, "List1=TV_I[i]"+TV_I[i]);
+                        Log.e(TAG, "List1=hartDataAnalysis.ave.get(0).get(i)"+ChartDataAnalysis.ave.get(0).get(i));
+                        Log.e(TAG, "List1=TV_P[i]"+TV_P[i]);
+                        TV_I[i].setText(String.format("%.1f",ChartDataAnalysis.ave.get(0).get(i)));
+                        TV_P[i].setText(String.format("%.1f",ChartDataAnalysis.ave.get(1).get(i)));
+                        TV_IE[i].setText(String.format("%.1f",ChartDataAnalysis.errorLists.get(i)));
+                        TV_PE[i].setText(String.format("%.1f",ChartDataAnalysis.errorLists1.get(i)));
+                    }
+                    WifiClientThread.chartFinsh1=true;
                     break;
                 case Constants.GET_TEXT_DATA:
                     mainActivity.logAppend("->"+"Offset校准完成"+"\n");
@@ -107,6 +127,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                     mainActivity.logLayout.setEnabled(true);
                     butAquisition.setEnabled(true);
                     butSelfCheck.setEnabled(true);
+                    butGroundResistance.setEnabled(true);
                     butCarlibration.setEnabled(true);
                     buttonUpdateConfigenableState=true;
                     break;
@@ -115,6 +136,8 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                         mainActivity.logAppend("->"+"仪器连接失败，请检查是否连接了仪器热点"+"\n");
                     butAquisition.setEnabled(true);
                     butSelfCheck.setEnabled(true);
+                    butGroundResistance.setEnabled(true);
+                    butGroundResistance.setEnabled(true);
                     butCarlibration.setEnabled(true);
                     buttonUpdateConfigenableState=true;
                     break;
@@ -165,12 +188,14 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         wifiManager = (WifiManager) mainActivity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         butCarlibration = (Button) mainActivity.findViewById(R.id.controller_button_calibration);
         butSelfCheck = (Button) mainActivity.findViewById(R.id.controller_button_selfcheck);
+        butGroundResistance = (Button) mainActivity.findViewById(R.id.controller_button_ground_resistance);
         butAquisition = (Button) mainActivity.findViewById(R.id.controller_button_aquisition);
         butOpenChart = (Button) mainActivity.findViewById(R.id.log_button_chart);
         fileSize=mainActivity.findViewById(R.id.progress_text);
 
         butAquisition.setOnClickListener(this);
         butSelfCheck.setOnClickListener(this);
+        butGroundResistance.setOnClickListener(this);
         butCarlibration.setOnClickListener(this);
         butOpenChart.setOnClickListener(this);
 
@@ -235,6 +260,9 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         else if (id == R.id.log_button_chart) {
             mainActivity.logContent = "";
         }
+        else if (id == R.id.controller_button_ground_resistance) {
+
+        }
     }
 
     //开始校准
@@ -246,6 +274,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         butAquisition.setEnabled(false);
         butSelfCheck.setEnabled(false);
         butCarlibration.setEnabled(false);
+        butGroundResistance.setEnabled(false);
         buttonUpdateConfigenableState=false;
 
         String log = "->正在校准,Offset校准使能\n";
@@ -312,6 +341,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         }else{
             butAquisition.setEnabled(true);
             butSelfCheck.setEnabled(true);
+            butGroundResistance.setEnabled(true);
             butCarlibration.setEnabled(true);
             buttonUpdateConfigenableState=true;
             mainActivity.logAppend("->"+"offset校准失败，请检查是否连接了仪器热点"+"\n");
@@ -346,6 +376,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
             buttonUpdateConfigenableState = false;
             butCarlibration.setEnabled(false);
             butSelfCheck.setEnabled(false);
+            butGroundResistance.setEnabled(false);
             lineChart_1.setTouchEnabled(false);
             lineChart_2.setTouchEnabled(false);
             mainActivity.controllerLayout.setEnabled(false);
@@ -360,6 +391,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
             buttonUpdateConfigenableState = true;
             butCarlibration.setEnabled(true);
             butSelfCheck.setEnabled(true);
+            butGroundResistance.setEnabled(true);
             lineChart_1.setTouchEnabled(true);
             lineChart_2.setTouchEnabled(true);
         }
@@ -379,6 +411,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
             buttonUpdateConfigenableState = true;
             butCarlibration.setEnabled(true);
             butSelfCheck.setEnabled(true);
+            butGroundResistance.setEnabled(true);
             lineChart_1.setTouchEnabled(true);
             lineChart_2.setTouchEnabled(true);
             mainActivity.controllerLayout.setEnabled(true);
@@ -399,10 +432,12 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         SharedPreferences.Editor pre = mainActivity.getSharedPreferences("butState", 0).edit();
 
         pre.putString("butCheckText", butSelfCheck.getText().toString());
+        pre.putString("butGroundResistance", butGroundResistance.getText().toString());
         pre.putString("butAquiText", butAquisition.getText().toString());
         pre.putBoolean("configState", buttonUpdateConfigenableState);
         pre.putBoolean("carliState", butCarlibration.isEnabled());
         pre.putBoolean("checkState", butSelfCheck.isEnabled());
+        pre.putBoolean("checkGroundResistanceState", butGroundResistance.isEnabled());
         pre.putBoolean("aquisitionState", butAquisition.isEnabled());
         //pre.putString("txtFileName",filenameview);
         pre.apply();
@@ -412,10 +447,12 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         SharedPreferences.Editor pre = mainActivity.getSharedPreferences("butState", 0).edit();
 
         pre.putString("butCheckText", butSelfCheck.getText().toString());
+        pre.putString("butGroundResistance", butGroundResistance.getText().toString());
         pre.putString("butAquiText", butAquisition.getText().toString());
         pre.putBoolean("configState", buttonUpdateConfigenableState);
         pre.putBoolean("carliState", butCarlibration.isEnabled());
         pre.putBoolean("checkState", butSelfCheck.isEnabled());
+        pre.putBoolean("checkGroundResistanceState", butGroundResistance.isEnabled());
         pre.putBoolean("aquisitionState", butAquisition.isEnabled());
         pre.apply();
 
@@ -428,14 +465,18 @@ public class LogFragment extends Fragment implements View.OnClickListener {
 
         String butCheckText = pre.getString("butCheckText", "开始自检");
         String butAquiText = pre.getString("butAquiText", "开始采集");
+        String butGroundResistanceText = pre.getString("butGroundResistance", "开始采集");
+
         //filenameview=pre.getString("txtFileName",Constants.DATA_DIRECTORY+"/"+"wrong.txt");
 
         butSelfCheck.setText(butCheckText);
         butAquisition.setText(butAquiText);
+        butGroundResistance.setText(butGroundResistanceText);
         //controllerFragment.butUpdateConfig.setEnabled(pre.getBoolean("configState", true));
         butCarlibration.setEnabled(pre.getBoolean("carliState", true));
         butSelfCheck.setEnabled(pre.getBoolean("checkState", true));
         butAquisition.setEnabled(pre.getBoolean("aquisitionState", true));
+        butGroundResistance.setEnabled(pre.getBoolean("checkGroundResistanceState", true));
 
         //vbias=DataAnalysisLzt.vbias;
 
@@ -443,6 +484,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
             butAquisition.setEnabled(true);
             butSelfCheck.setEnabled(true);
             butCarlibration.setEnabled(true);
+            butGroundResistance.setEnabled(true);
             buttonUpdateConfigenableState=true;
         }
         super.onResume();

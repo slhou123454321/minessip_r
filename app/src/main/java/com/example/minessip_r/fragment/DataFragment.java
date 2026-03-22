@@ -18,7 +18,6 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.minessip_r.R;
-import com.example.minessip_r.databinding.FragmentDataBinding;
 import com.example.minessip_r.ui.ResultActivity;
 
 import java.io.File;
@@ -37,8 +36,6 @@ public class DataFragment extends Fragment {
     private List<String> fileList = new ArrayList<>();
     private File currentDir;
     private ArrayAdapter<String> adapter;
-    private FragmentDataBinding binding;
-
 
     @SuppressLint("MissingInflatedId")
     @Override
