@@ -42,11 +42,11 @@ public class WifiClientThread extends Thread{
     public static boolean chartFinsh1=true;//图表更新完成
     public  boolean stopThreadFlag=false;
     private  boolean checkout=false;//数据校验位出错
-    private int times=0;
+    private int times=1;
     public  ArrayList<ArrayList<Float>> Lists=null;//缓存上一次的电阻率数据
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-    public static boolean wifiTestFlag = true;
+    public static boolean wifiTestFlag = false;
 
     public WifiClientThread(String ip, Handler handler, MainActivity mainActivity) {
         Log.e("AAA","ClientThread开启");
@@ -249,16 +249,13 @@ public class WifiClientThread extends Thread{
                 }else{
                     ChartDataAnalysis.lists1 = ChartDataAnalysis.binaryToDecimal(filename);//电压
                     Log.e(TAG, "ChartDataAnalysis:"+ChartDataAnalysis.lists1.size());
-
-                    for(int i=0;i<ChartDataAnalysis.lists1.size();i++){
+                    ChartDataAnalysis.Curlists = new ArrayList<>(ChartDataAnalysis.lists1);
+                    /*for(int i=0;i<ChartDataAnalysis.lists1.size();i++){
                         ChartDataAnalysis.Curlists.add(new ArrayList<>());
                         for(int j=0;j<ChartDataAnalysis.lists1.get(i).size();j++){
                             ChartDataAnalysis.Curlists.get(i).add(ChartDataAnalysis.lists1.get(i).get(j));//电阻1000
                         }
-                    }
-                    //傅里叶变换
-                    // handler.obtainMessage(Constants.SET_LOG_MESSAGE,"信号频率："+ControllerFragment.signalFrequency+"\r\n").sendToTarget();
-                    // handler.obtainMessage(Constants.SET_LOG_MESSAGE,"采样率："+ControllerFragment.getSPS+"\r\n").sendToTarget();
+                    }*/
                     ArrayList<Complex> temp=ChartDataAnalysis.getSingleFFTarray(ChartDataAnalysis.lists1,ControllerFragment.signalFrequency,ControllerFragment.getSPS,ControllerFragment.dotNumber);
                     for(int i=0;i<temp.size();i++){
                         // handler.obtainMessage(Constants.SET_LOG_MESSAGE,"计算前："+temp.get(i).toString()+"\r\n").sendToTarget();
@@ -281,19 +278,10 @@ public class WifiClientThread extends Thread{
                     }
                     ChartDataAnalysis.errorLists = ChartDataAnalysis.getErrorLists(Lists.get(0),ChartDataAnalysis.ave.get(0));
                     ChartDataAnalysis.errorLists1 = ChartDataAnalysis.getErrorLists(Lists.get(1),ChartDataAnalysis.ave.get(1));
-                    boolean isLimit=ChartDataAnalysis.isLimit(ChartDataAnalysis.errorLists,50.0);
+                    Lists = null;
                     handler.obtainMessage(Constants.CHANGE_TABLE).sendToTarget();
-                    if (times<2||(isLimit&&times<3)){
-                        times++;
-                        handler.obtainMessage(Constants.SET_LOG_MESSAGE,"第"+times+"次采集完成\r\n").sendToTarget();
-                        Lists=ChartDataAnalysis.ave;//对比数据保存这一次的数据与下次的数据计算误差
-                        if (isLimit){
-                            handler.obtainMessage(Constants.SET_LOG_MESSAGE,"误差超出阈值，重新采集\r\n").sendToTarget();
-                        }
-                    }else{
-                        //handler.obtainMessage(Constants.FINISH_THREAD,"采集结束！！！\r\n").sendToTarget();
-                        //break;
-                    }
+                    handler.obtainMessage(Constants.SET_LOG_MESSAGE,"第"+times+"次采集完成\r\n").sendToTarget();
+                    times++;
                 }
             }
         }

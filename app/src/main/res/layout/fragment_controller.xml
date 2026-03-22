@@ -310,8 +310,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:text="应用"
-                        android:backgroundTint="#FF9800"/>
+                        android:text="应用"/>
                 </LinearLayout>
             </LinearLayout>
 

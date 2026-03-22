@@ -5,110 +5,127 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     tools:context=".ui.MainActivity">
 
+    <!-- 内容区域 -->
     <FrameLayout
         android:id="@+id/fragment_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="15" >
+        android:layout_weight="1"
+        android:background="#FFFFFF">
     </FrameLayout>
 
+    <!-- 底部导航栏 - 增大高度和图标尺寸 -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.1"
+        android:layout_height="55dp"
         android:orientation="horizontal"
-        android:background="@android:color/background_light" >
+        android:background="@android:color/white"
+        android:elevation="4dp">
 
+        <!-- 采集控制 -->
         <RelativeLayout
             android:id="@+id/log_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" >
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:gravity="center">
 
                 <ImageView
                     android:id="@+id/log_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/image_log_unselected" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/image_log_unselected"
+                    android:scaleType="fitCenter" />
+
                 <TextView
                     android:id="@+id/log_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:text="采集控制"
-                    android:textSize="10sp"
-                    android:textColor="@android:color/background_dark" />
+                    android:textSize="12sp"
+                    android:textColor="#666666" />
             </LinearLayout>
         </RelativeLayout>
+
+        <!-- 参数设置 -->
         <RelativeLayout
             android:id="@+id/controller_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:gravity="center">
 
                 <ImageView
                     android:id="@+id/controller_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/image_controller_unselected" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/image_controller_unselected"
+                    android:scaleType="fitCenter" />
 
                 <TextView
                     android:id="@+id/controller_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:text="参数设置"
-                    android:textSize="10sp"
-                    android:textColor="@android:color/background_dark" />
+                    android:textSize="12sp"
+                    android:textColor="#666666" />
             </LinearLayout>
         </RelativeLayout>
+
+        <!-- 测量结果 -->
         <RelativeLayout
             android:id="@+id/data_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" >
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:gravity="center">
 
                 <ImageView
                     android:id="@+id/data_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/image_data_unselected" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/image_data_unselected"
+                    android:scaleType="fitCenter" />
 
                 <TextView
                     android:id="@+id/data_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:text="测量结果"
-                    android:textSize="10sp"
-                    android:textColor="@android:color/background_dark" />
+                    android:textSize="12sp"
+                    android:textColor="#666666" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
-
-
 
 </LinearLayout>

@@ -60,10 +60,10 @@ public class LogFragment extends Fragment implements View.OnClickListener {
     private Button butDelectSD;
 
     private TextView fileSize;
-    private TextView[] TV_I=new TextView[3];
-    private TextView[] TV_IE=new TextView[3];
-    private TextView[] TV_P=new TextView[3];
-    private TextView[] TV_PE=new TextView[3];
+    private TextView[] TV_I=new TextView[4];
+    private TextView[] TV_IE=new TextView[4];
+    private TextView[] TV_P=new TextView[4];
+    private TextView[] TV_PE=new TextView[4];
 
     private boolean buttonUpdateConfigenableState = true;
     private WifiManager wifiManager;
@@ -111,15 +111,15 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                     ChartPlay.initChartView(lineChart_2,3,"","","电压(mV)/通道号");//初始化图表
                     ChartPlay.showLineChart1(lineChart_2,ChartDataAnalysis.ave.get(0),"电压曲线", Color.CYAN,0);
                     lineChart_2.invalidate();
-//                    for(int i=0;i<3;i++){
-//                        Log.e(TAG, "List1=TV_I[i]"+TV_I[i]);
-//                        Log.e(TAG, "List1=hartDataAnalysis.ave.get(0).get(i)"+ChartDataAnalysis.ave.get(0).get(i));
-//                        Log.e(TAG, "List1=TV_P[i]"+TV_P[i]);
-//                        TV_I[i].setText(String.format("%.1f",ChartDataAnalysis.ave.get(0).get(i)));
-//                        TV_P[i].setText(String.format("%.1f",ChartDataAnalysis.ave.get(1).get(i)));
-//                        TV_IE[i].setText(String.format("%.1f",ChartDataAnalysis.errorLists.get(i)));
-//                        TV_PE[i].setText(String.format("%.1f",ChartDataAnalysis.errorLists1.get(i)));
-//                    }
+                    for(int i=0;i<4;i++){
+                        Log.e(TAG, "List1=TV_I[i]"+TV_I[i]);
+                        Log.e(TAG, "List1=hartDataAnalysis.ave.get(0).get(i)"+ChartDataAnalysis.ave.get(0).get(i));
+                        Log.e(TAG, "List1=TV_P[i]"+TV_P[i]);
+                        TV_I[i].setText(String.format("%.1f",ChartDataAnalysis.ave.get(0).get(i)));
+                        TV_P[i].setText(String.format("%.1f",ChartDataAnalysis.ave.get(1).get(i)));
+                        TV_IE[i].setText(String.format("%.1f",ChartDataAnalysis.errorLists.get(i)));
+                        TV_PE[i].setText(String.format("%.1f",ChartDataAnalysis.errorLists1.get(i)));
+                    }
                     WifiClientThread.chartFinsh1=true;
                     break;
                 case Constants.CHANGE_CALIBRA:
@@ -202,6 +202,26 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         butCarlibration.setOnClickListener(this);
         butOpenChart.setOnClickListener(this);
         butDelectSD.setOnClickListener(this);
+        initTableViews();
+    }
+
+    // 批量初始化
+    private void initTableViews() {
+        // 振幅控件 ID 数组
+        int[] ampIds = {R.id.ch1, R.id.ch2, R.id.ch3, R.id.ch4};
+        // 振幅误差控件 ID 数组
+        int[] ampErrIds = {R.id.che1, R.id.che2, R.id.che3, R.id.che4};
+        // 相位控件 ID 数组
+        int[] phaseIds = {R.id.ch_p1, R.id.ch_p2, R.id.ch_p3, R.id.ch_p4};
+        // 相位误差控件 ID 数组
+        int[] phaseErrIds = {R.id.ch_pe1, R.id.ch_pe2, R.id.ch_pe3, R.id.ch_pe4};
+
+        for (int i = 0; i < 4; i++) {
+            TV_I[i] = mainActivity.findViewById(ampIds[i]);
+            TV_IE[i] = mainActivity.findViewById(ampErrIds[i]);
+            TV_P[i] = mainActivity.findViewById(phaseIds[i]);
+            TV_PE[i] = mainActivity.findViewById(phaseErrIds[i]);
+        }
     }
     public void initChart(){
         SharedPreferences pre = mainActivity.getSharedPreferences("butState", 0);//打开文件
