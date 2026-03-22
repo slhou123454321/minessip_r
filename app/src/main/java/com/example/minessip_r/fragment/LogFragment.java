@@ -103,11 +103,13 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                     Log.e(TAG, "List1="+ChartDataAnalysis.ave.get(0).size()+"  "+ChartDataAnalysis.ave.get(1).size());
                     Log.e(TAG, "List1="+TV_I.length);
                     Log.e(TAG,"ChartDataAnalysis.lists1"+ChartDataAnalysis.Curlists.size());
+                    lineChart_1.clear();
                     ChartPlay.showLineChart(lineChart_1,ChartDataAnalysis.Curlists.get(0),"电压1", Color.RED,0);
                     ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(1),"电压2", Color.GREEN ,0);
                     ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(2),"电压3", Color.BLUE  ,0);
                     ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(3),"电压4", Color.YELLOW  ,0);
                     lineChart_1.invalidate();
+                    lineChart_2.clear();
                     ChartPlay.initChartView(lineChart_2,3,"","","电压(mV)/通道号");//初始化图表
                     ChartPlay.showLineChart1(lineChart_2,ChartDataAnalysis.ave.get(0),"电压曲线", Color.CYAN,0);
                     lineChart_2.invalidate();

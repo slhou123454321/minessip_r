@@ -579,6 +579,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
         if (viewId == R.id.adc_sampling_spinner) {
             if (position >= 0 && position < samplingArr.length) {
                 getSPS = samplingArr[position];
+                dotNumber = 4*getSPS;
                 Log.d(TAG, "ADC采样率: " + getSPS + " SPS");
             }
         }

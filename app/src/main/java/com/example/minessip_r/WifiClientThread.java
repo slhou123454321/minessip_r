@@ -120,7 +120,7 @@ public class WifiClientThread extends Thread{
                 // todo WiFi自测
                 totalLength = 5 * 3 * 150;//需要采集的总数据，6道数据，每个数据5个字节
             } else {
-                totalLength=5 * ControllerFragment.dotNumber;//需要采集的总数据，3道数据，每个数据5个字节
+                totalLength=5 * ControllerFragment.dotNumber *4;//需要采集的总数据，4道数据，每个数据5个字节
             }
             if(ChartDataAnalysis.ave.size()==0){
                 ChartDataAnalysis.ave.add(new ArrayList<Float>());
@@ -247,16 +247,8 @@ public class WifiClientThread extends Thread{
                     sendToBle(Constants.CMD_STOP);
                     handler.obtainMessage(Constants.SET_LOG_MESSAGE,"数据接收不足,重新开始采集").sendToTarget();
                 }else{
-                    ChartDataAnalysis.lists1 = ChartDataAnalysis.binaryToDecimal(filename);//电压
-                    Log.e(TAG, "ChartDataAnalysis:"+ChartDataAnalysis.lists1.size());
-                    ChartDataAnalysis.Curlists = new ArrayList<>(ChartDataAnalysis.lists1);
-                    /*for(int i=0;i<ChartDataAnalysis.lists1.size();i++){
-                        ChartDataAnalysis.Curlists.add(new ArrayList<>());
-                        for(int j=0;j<ChartDataAnalysis.lists1.get(i).size();j++){
-                            ChartDataAnalysis.Curlists.get(i).add(ChartDataAnalysis.lists1.get(i).get(j));//电阻1000
-                        }
-                    }*/
-                    ArrayList<Complex> temp=ChartDataAnalysis.getSingleFFTarray(ChartDataAnalysis.lists1,ControllerFragment.signalFrequency,ControllerFragment.getSPS,ControllerFragment.dotNumber);
+                    ChartDataAnalysis.Curlists = ChartDataAnalysis.binaryToDecimal(filename);//电压
+                    ArrayList<Complex> temp=ChartDataAnalysis.getSingleFFTarray(ChartDataAnalysis.Curlists,ControllerFragment.signalFrequency,ControllerFragment.getSPS,ControllerFragment.dotNumber);
                     for(int i=0;i<temp.size();i++){
                         // handler.obtainMessage(Constants.SET_LOG_MESSAGE,"计算前："+temp.get(i).toString()+"\r\n").sendToTarget();
                         Complex avetemp = temp.get(i).div(new Complex(1,0));//用最后一组电压值计算电流
@@ -269,16 +261,16 @@ public class WifiClientThread extends Thread{
                         ChartDataAnalysis.ave.get(1).add((float)pharse_r);//相位
                     }
                     saveDataFile(modfiedTime);
-                    Log.e(TAG, "ChartDataAnalysis.aveChartDataAnalysis.lists1 " + ChartDataAnalysis.lists1.get(0));
+                    handler.obtainMessage(Constants.SET_LOG_MESSAGE,"ave.size"+ ChartDataAnalysis.ave.get(0).size()).sendToTarget();
+                    handler.obtainMessage(Constants.SET_LOG_MESSAGE,"Curlists.size"+ ChartDataAnalysis.Curlists.get(0).size()).sendToTarget();
                     Log.e(TAG, "ChartDataAnalysis.ave.get(0) " + ChartDataAnalysis.ave.get(0));
                     Log.e(TAG, "ChartDataAnalysis.ave.get(1) " + ChartDataAnalysis.ave.get(1));
                     chartFinsh1 = false;
-                    if (Lists==null){
-                        Lists=ChartDataAnalysis.ave;
+                    if(Lists!=null){
+                        ChartDataAnalysis.errorLists = ChartDataAnalysis.getErrorLists(Lists.get(0),ChartDataAnalysis.ave.get(0));
+                        ChartDataAnalysis.errorLists1 = ChartDataAnalysis.getErrorLists(Lists.get(1),ChartDataAnalysis.ave.get(1));
                     }
-                    ChartDataAnalysis.errorLists = ChartDataAnalysis.getErrorLists(Lists.get(0),ChartDataAnalysis.ave.get(0));
-                    ChartDataAnalysis.errorLists1 = ChartDataAnalysis.getErrorLists(Lists.get(1),ChartDataAnalysis.ave.get(1));
-                    Lists = null;
+                    Lists=ChartDataAnalysis.ave;
                     handler.obtainMessage(Constants.CHANGE_TABLE).sendToTarget();
                     handler.obtainMessage(Constants.SET_LOG_MESSAGE,"第"+times+"次采集完成\r\n").sendToTarget();
                     times++;
