@@ -7,7 +7,9 @@ import com.example.minessip_r.math.Complex;
 
 import org.jtransforms.fft.DoubleFFT_1D;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -45,76 +47,187 @@ public class ChartDataAnalysis {
     }
 
 
+
+
+
+
+
+    public static ArrayList<ArrayList<Float>> binaryToDecimal(String dataFilePathname) {
+        if (dataFilePathname != null) {
+            File file = new File(dataFilePathname);
+            if (!file.exists() || file.length() < 1) {
+                Log.e(TAG, "文件不存在或为空: " + dataFilePathname);
+                return ChartDataAnalysis.getSinData(0.2f, 1.0f, 100);
+            }
+
+            long fileSize = file.length();
+            Log.d(TAG, "========================================");
+            Log.d(TAG, "文件路径: " + dataFilePathname);
+            Log.d(TAG, "文件大小: " + fileSize + " 字节");
+            Log.d(TAG, "========================================");
+
+            ArrayList<ArrayList<Float>> lists = new ArrayList<>();
+            for (int i = 0; i < 4; i++) {
+                lists.add(new ArrayList<Float>());
+            }
+
+            RandomAccessFile readFile = null;
+            byte[] buffer = new byte[5];
+            int packetIndex = 0;
+
+            try {
+                readFile = new RandomAccessFile(file, "r");
+
+                while (readFile.read(buffer) != -1) {
+                    // 打印当前数据包的原始十六进制
+                    String hexStr = String.format("%02X %02X %02X %02X %02X",
+                            buffer[0], buffer[1], buffer[2], buffer[3], buffer[4]);
+
+                    // 通道号
+                    int channelNumber = buffer[0] & 0xFF;
+
+                    // 4字节数据（大端序）
+                    int data = ((buffer[1] & 0xFF) << 24)
+                            | ((buffer[2] & 0xFF) << 16)
+                            | ((buffer[3] & 0xFF) << 8)
+                            | (buffer[4] & 0xFF);
+
+                    // 无符号转换（用于打印）
+                    long unsignedData = data & 0xFFFFFFFFL;
+
+                    // 打印详细信息
+                    Log.d(TAG, String.format("包[%d]: %s | 通道号=0x%02X (%d) | 数据=0x%08X (%d) | 无符号=%d",
+                            packetIndex, hexStr, channelNumber, channelNumber, data, data, unsignedData));
+
+                    // 验证通道号是否在有效范围内
+                    if (channelNumber >= 0 && channelNumber < 4) {
+                        float value = convertRawDataToValue(data);
+                        lists.get(channelNumber).add(value);
+                        Log.d(TAG, String.format("  → 通道%d 转换值: %.6f", channelNumber + 1, value));
+                    } else {
+                        Log.w(TAG, String.format("  → 无效通道号: %d (0x%02X)，跳过", channelNumber, channelNumber));
+                    }
+
+                    packetIndex++;
+                }
+
+                Log.d(TAG, "========================================");
+                Log.d(TAG, "解析完成，共处理 " + packetIndex + " 个数据包");
+                Log.d(TAG, "各通道数据量: ");
+                for (int i = 0; i < 4; i++) {
+                    Log.d(TAG, "  通道" + (i + 1) + ": " + lists.get(i).size() + " 个数据");
+                }
+                Log.d(TAG, "========================================");
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Log.e(TAG, "文件未找到: " + dataFilePathname);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e(TAG, "读取文件错误: " + e.getMessage());
+            } finally {
+                if (readFile != null) {
+                    try {
+                        readFile.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            return lists;
+
+        } else {
+            Log.e(TAG, "文件路径为null");
+            return ChartDataAnalysis.getSinData(0.2f, 1.0f, 100);
+        }
+    }
     /**
      *
      * @param dataFilePathname 文件名
      * @return           返回原始数据集合数组，解析二进制数据
      */
-    public static ArrayList<ArrayList<Float>> binaryToDecimal(String dataFilePathname){
-        if (dataFilePathname!=null){
-            //todo
+    public static ArrayList<ArrayList<Float>> binaryToDecimal1(String dataFilePathname) {
+        if (dataFilePathname != null) {
             File file = new File(dataFilePathname);
-            if(!file.exists() || file.length()<1){
-                return ChartDataAnalysis.getSinData(0.2f,1.0f,100);
+            if (!file.exists() || file.length() < 1) {
+                return ChartDataAnalysis.getSinData(0.2f, 1.0f, 100);
             }
-            long fileSize = file.length();//返回文件长度，字节为单位
-            int DotNumber = (int) fileSize/5/6;//每个数据5字节，所以每道数据点数为式子所求。   250*32
-            ArrayList<ArrayList<Float>> lists=new ArrayList<>();
-            for(int i = 0;i < 3;i++){
+
+            long fileSize = file.length();
+            int packetCount = (int) fileSize / 5;  // 每个包5字节
+
+            // 创建4个通道的列表（通道1-4）
+            ArrayList<ArrayList<Float>> lists = new ArrayList<>();
+            for (int i = 0; i < 4; i++) {
                 lists.add(new ArrayList<Float>());
             }
+
             RandomAccessFile readFile = null;
-            byte[] buffer = new byte[300];
-            int len = 0;
-            Log.e(TAG, "fileSize =" + fileSize);
-            Log.e(TAG, "DotNumber =" + DotNumber);
+            byte[] buffer = new byte[5];
+
             try {
-                readFile=new RandomAccessFile(file, "r");
-                int sum=0;
-                int count=DotNumber/10;
-                while(count--!=0) {
-                    len = readFile.read(buffer);
-                    if (len < 300) {
-                        break;
+                readFile = new RandomAccessFile(file, "r");
+                int validCount = 0;
+
+                while (readFile.read(buffer) != -1) {
+                    // 第1字节：通道号
+                    int channelNumber = buffer[0] & 0xFF;
+
+                    // 后4字节：32位数据
+                    int data = (buffer[1] & 0xFF) << 24
+                            | (buffer[2] & 0xFF) << 16
+                            | (buffer[3] & 0xFF) << 8
+                            | (buffer[4] & 0xFF);
+
+                    // 转换数据（与原协议相同）
+                    float value = convertRawDataToValue(data);
+
+                    // 通道号范围：00, 01, 02, 03 对应通道1-4
+                    if (channelNumber >= 0 && channelNumber < lists.size()) {
+                        lists.get(channelNumber).add(value);
+                        validCount++;
+                        Log.d(TAG, "通道" + (channelNumber + 1) + " 数据: " + value);
+                    } else {
+                        Log.w(TAG, "无效通道号: " + channelNumber);
                     }
-                    for(int i = 0; i < 10; i++) {
-                        for (int j = 0; j < 6; j++) {
-                            int begin = i * 30 + j * 5;
-                            int mark = (buffer[begin] & 0xff);
-                            int data = (buffer[begin + 1] & 0xff) << 24
-                                    | (buffer[begin + 2] & 0xff) << 16
-                                    | (buffer[begin + 3] & 0xff) << 8
-                                    | buffer[begin + 4] & 0xff;
-                            float data_f = ((float) data) / 4294967296L * 5000 ;//得到的是电位值，单位为mV；
-
-                            // data_f = data_f / 62.5f;// /62.5直接转换为电流A
-
-                            int a=mark;
-                            Log.e(TAG, "runtext2 data_f=" + data_f + "  a =" +a);
-                            Log.e(TAG, "runtext2 data_f=" + data_f + "  a-1 =" +(a-1));
-
-                            //int a = mark>195?6:(mark%5==0?5:mark%5);
-                            //Log.e(TAG, "runtext2  a=" + a + "  mark=" + mark);
-                            // 霍尔传感器转换
-                            data_f = data_f*1000/62.5f;
-                            if(a-1<lists.size() && a-1>=0)lists.get(a-1).add(data_f);
-                                /*if (mark >0 && mark <= 234) {
-                                    temp.get(mark-1).add(data_f);
-                                }*/
-                        }
-                    }
-                    sum+=10;
                 }
-                //templist=new ArrayList<>(temp);
-            }catch (FileNotFoundException e) {
+
+                Log.d(TAG, "有效数据点数: " + validCount);
+
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                if (readFile != null) {
+                    try {
+                        readFile.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
+
             return lists;
-        }else{
-            return ChartDataAnalysis.getSinData(0.2f,1.0f,100);
+
+        } else {
+            return ChartDataAnalysis.getSinData(0.2f, 1.0f, 100);
         }
+    }
+
+    /**
+     * 将32位原始数据转换为实际物理量（与原协议相同）
+     *
+     * @param rawData 32位原始数据（0 ~ 4294967295）
+     * @return 转换后的电流值
+     */
+    private static float convertRawDataToValue(int rawData) {
+        // 转换为电压（mV）
+        float voltage = ((float) rawData) / 4294967296L * 5000.0f;
+        // 霍尔传感器转换：电压(mV) → 电流
+        float current = voltage * 1000.0f / 62.5f;
+        return current;
     }
 
     /**

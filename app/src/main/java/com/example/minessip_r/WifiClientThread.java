@@ -46,7 +46,7 @@ public class WifiClientThread extends Thread{
     public  ArrayList<ArrayList<Float>> Lists=null;//缓存上一次的电阻率数据
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-    public static boolean wifiTestFlag = false;
+    public static boolean wifiTestFlag = true;
 
     public WifiClientThread(String ip, Handler handler, MainActivity mainActivity) {
         Log.e("AAA","ClientThread开启");
@@ -54,12 +54,10 @@ public class WifiClientThread extends Thread{
         this.handler = handler;
         this.mainActivity=mainActivity;
     }
-    boolean test = true;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void run() {
-        while (!stopThreadFlag && test) {
-            test = false;
+        while (!stopThreadFlag) {
             while(!chartFinsh1){
                 Log.e(TAG, "!chartFinsh1");
                 try {
@@ -122,7 +120,7 @@ public class WifiClientThread extends Thread{
                 // todo WiFi自测
                 totalLength = 5 * 3 * 150;//需要采集的总数据，6道数据，每个数据5个字节
             } else {
-                totalLength=5 * 3 * ControllerFragment.dotNumber;//需要采集的总数据，3道数据，每个数据5个字节
+                totalLength=5 * ControllerFragment.dotNumber;//需要采集的总数据，3道数据，每个数据5个字节
             }
             if(ChartDataAnalysis.ave.size()==0){
                 ChartDataAnalysis.ave.add(new ArrayList<Float>());
@@ -173,7 +171,7 @@ public class WifiClientThread extends Thread{
                                 int seq = buffer[j] & 0xff;
                                 //Log.e(TAG, "runtext1:校验位 " + seq);
                                 // todo WiFi自测
-                                if (((seq <= 0) || (seq > 6))&& !wifiTestFlag){
+                                if (((seq <= 0) || (seq > 6))&& false){
                                     checkout = true;
                                     sendToBle(Constants.CMD_STOP);
                                     sendToBle(Constants.CMD_RESET);
@@ -298,9 +296,7 @@ public class WifiClientThread extends Thread{
                     }
                 }
             }
-            // stopThreadFlag = true;
         }
-        //sendToBle(Constants.CMD_SEND_DATA);
     }
     //新建文件记录复位情况
     private void SetResetFile(String s){

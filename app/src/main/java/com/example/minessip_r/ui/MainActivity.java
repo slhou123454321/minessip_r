@@ -163,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         setTabDisplay(0);
         XCrash.init(this);
+        Constants.DATA_DIRECTORY = getExternalFilesDir(null).getAbsolutePath() + "/MineSSIP_R";
         if (WifiClientThread.wifiTestFlag) {
             Thread serverThread = new Thread(new Runnable() {
                 @Override
@@ -172,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
             serverThread.start();
         }
-        Constants.DATA_DIRECTORY = getExternalFilesDir(null).getAbsolutePath() + "/MineSSIP_R";
     }
 
     private void getpermissions()//运行时权限授权
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void displayToast(String string){
-        Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> Toast.makeText(MainActivity.this, string, Toast.LENGTH_SHORT).show());
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
 

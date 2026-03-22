@@ -98,7 +98,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="通道1"
+                            android:text="通道4"
                             android:checked="true"/>
 
                         <CheckBox
@@ -106,21 +106,21 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="通道2"/>
+                            android:text="通道3"/>
 
                         <CheckBox
                             android:id="@+id/dac_channel_3"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="通道3"/>
+                            android:text="通道2"/>
 
                         <CheckBox
                             android:id="@+id/dac_channel_4"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="通道4"/>
+                            android:text="通道1"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -195,17 +195,76 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="打开"
+                            android:layout_weight="1"
                             android:checked="true"/>
 
                         <RadioButton
                             android:id="@+id/dac_output_close"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:text="关闭"/>
                     </RadioGroup>
                 </LinearLayout>
-
             </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            android:padding="10dp"
+            android:background="#fff">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="同步方式"
+                android:textColor="#696969"
+                android:textSize="18dp"
+                android:textStyle="bold"
+
+                android:paddingBottom="8dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="同步方式"
+                    android:gravity="center_vertical"
+                    android:textSize="14sp"/>
+
+                <RadioGroup
+                    android:id="@+id/dac_sync_switch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/dac_sync_gps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+
+                        android:text="GPS同步"
+                        android:checked="true"/>
+
+                    <RadioButton
+                        android:id="@+id/dac_sync_local"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="本地同步"/>
+                </RadioGroup>
+            </LinearLayout>
+
+        </LinearLayout>
 
             <!-- 低功耗模式区域（独立出来） -->
             <LinearLayout

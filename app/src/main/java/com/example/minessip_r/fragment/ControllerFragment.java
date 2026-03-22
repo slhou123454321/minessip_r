@@ -48,7 +48,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
     public static String resultFileNameE = "defaultData";
 
     /** 点数量 */
-    public static int dotNumber = 1000;
+    public static int dotNumber = getSPS*4;
 
     /** 信号频率 */
     public static double signalFrequency = 1;

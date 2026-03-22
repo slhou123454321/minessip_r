@@ -37,6 +37,8 @@ public class Constants {
     public static final int GET_TEMP_CHART2_CHANGE=30;
     public static final int STOP_AQUISITION=31;//停止采集
     public static final int CHANGE_TABLE=32;//修改表格信息
+    public static final int CHANGE_CALIBRA=33;// 校准完成
+
 
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 

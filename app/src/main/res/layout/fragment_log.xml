@@ -69,7 +69,7 @@
                         <TextView
                             android:layout_width="1dp"
                             android:gravity="center"
-                            android:text="振幅(I)"
+                            android:text="振幅(mV)"
                             android:textSize="11sp" />
 
                         <TextView
@@ -301,6 +301,15 @@
                     android:text="清空日志"
                     android:textSize="10sp" />
 
+                <Button
+                    android:id="@+id/button_delectsd"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="清空sd卡"
+                    android:textSize="10sp" />
+
             </LinearLayout>
 
             <ScrollView
@@ -334,7 +343,7 @@
                     android:layout_margin="2dp"
                     android:padding="1dp"
                     android:textSize="12sp"
-                    android:text="开始校准" />
+                    android:text="仪器校准" />
 
                 <Button
                     android:id="@+id/controller_button_selfcheck"
@@ -345,7 +354,7 @@
                     android:layout_margin="2dp"
                     android:padding="1dp"
                     android:textSize="12sp"
-                    android:text="开始自检" />
+                    android:text="仪器自检" />
 
                 <Button
                     android:id="@+id/controller_button_aquisition"
@@ -367,7 +376,7 @@
                     android:layout_margin="2dp"
                     android:padding="1dp"
                     android:textSize="12sp"
-                    android:text="开始接地电阻测试" />
+                    android:text="接地电阻测试" />
 
             </GridLayout>
 

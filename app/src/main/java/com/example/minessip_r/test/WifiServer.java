@@ -81,6 +81,7 @@ public class WifiServer {
                     return name.endsWith(".dat");
                 }
             });
+            Log.d("WifiServer", "files:"+directory.getAbsolutePath());
 
             if (files != null && files.length > 0) {
                 // 遍历每个 .dat 文件并发送数据

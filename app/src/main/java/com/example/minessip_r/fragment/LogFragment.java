@@ -57,6 +57,8 @@ public class LogFragment extends Fragment implements View.OnClickListener {
     private Button butSelfCheck;
     private Button butGroundResistance;
     private Button butOpenChart;
+    private Button butDelectSD;
+
     private TextView fileSize;
     private TextView[] TV_I=new TextView[3];
     private TextView[] TV_IE=new TextView[3];
@@ -101,27 +103,27 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                     Log.e(TAG, "List1="+ChartDataAnalysis.ave.get(0).size()+"  "+ChartDataAnalysis.ave.get(1).size());
                     Log.e(TAG, "List1="+TV_I.length);
                     Log.e(TAG,"ChartDataAnalysis.lists1"+ChartDataAnalysis.Curlists.size());
-                    ChartPlay.showLineChart(lineChart_1,ChartDataAnalysis.Curlists.get(0),"电流1", Color.RED,0);
-                    ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(1),"电流2", Color.GREEN ,0);
-                    ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(2),"电流3", Color.BLUE  ,0);
-                    ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(3),"电流4", Color.YELLOW  ,0);
+                    ChartPlay.showLineChart(lineChart_1,ChartDataAnalysis.Curlists.get(0),"电压1", Color.RED,0);
+                    ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(1),"电压2", Color.GREEN ,0);
+                    ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(2),"电压3", Color.BLUE  ,0);
+                    ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(3),"电压4", Color.YELLOW  ,0);
                     lineChart_1.invalidate();
-                    ChartPlay.initChartView(lineChart_2,3,"","","电流(mA)/通道号");//初始化图表
-                    ChartPlay.showLineChart1(lineChart_2,ChartDataAnalysis.ave.get(0),"电流曲线", Color.CYAN,0);
+                    ChartPlay.initChartView(lineChart_2,3,"","","电压(mV)/通道号");//初始化图表
+                    ChartPlay.showLineChart1(lineChart_2,ChartDataAnalysis.ave.get(0),"电压曲线", Color.CYAN,0);
                     lineChart_2.invalidate();
-                    for(int i=0;i<3;i++){
-                        Log.e(TAG, "List1=TV_I[i]"+TV_I[i]);
-                        Log.e(TAG, "List1=hartDataAnalysis.ave.get(0).get(i)"+ChartDataAnalysis.ave.get(0).get(i));
-                        Log.e(TAG, "List1=TV_P[i]"+TV_P[i]);
-                        TV_I[i].setText(String.format("%.1f",ChartDataAnalysis.ave.get(0).get(i)));
-                        TV_P[i].setText(String.format("%.1f",ChartDataAnalysis.ave.get(1).get(i)));
-                        TV_IE[i].setText(String.format("%.1f",ChartDataAnalysis.errorLists.get(i)));
-                        TV_PE[i].setText(String.format("%.1f",ChartDataAnalysis.errorLists1.get(i)));
-                    }
+//                    for(int i=0;i<3;i++){
+//                        Log.e(TAG, "List1=TV_I[i]"+TV_I[i]);
+//                        Log.e(TAG, "List1=hartDataAnalysis.ave.get(0).get(i)"+ChartDataAnalysis.ave.get(0).get(i));
+//                        Log.e(TAG, "List1=TV_P[i]"+TV_P[i]);
+//                        TV_I[i].setText(String.format("%.1f",ChartDataAnalysis.ave.get(0).get(i)));
+//                        TV_P[i].setText(String.format("%.1f",ChartDataAnalysis.ave.get(1).get(i)));
+//                        TV_IE[i].setText(String.format("%.1f",ChartDataAnalysis.errorLists.get(i)));
+//                        TV_PE[i].setText(String.format("%.1f",ChartDataAnalysis.errorLists1.get(i)));
+//                    }
                     WifiClientThread.chartFinsh1=true;
                     break;
-                case Constants.GET_TEXT_DATA:
-                    mainActivity.logAppend("->"+"Offset校准完成"+"\n");
+                case Constants.CHANGE_CALIBRA:
+                    mainActivity.logAppend("->"+"校准完成"+"\n");
                     mainActivity.controllerLayout.setEnabled(true);
                     mainActivity.dataLayout.setEnabled(true);
                     mainActivity.logLayout.setEnabled(true);
@@ -191,6 +193,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         butGroundResistance = (Button) mainActivity.findViewById(R.id.controller_button_ground_resistance);
         butAquisition = (Button) mainActivity.findViewById(R.id.controller_button_aquisition);
         butOpenChart = (Button) mainActivity.findViewById(R.id.log_button_chart);
+        butDelectSD = (Button) mainActivity.findViewById(R.id.button_delectsd);
         fileSize=mainActivity.findViewById(R.id.progress_text);
 
         butAquisition.setOnClickListener(this);
@@ -198,7 +201,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         butGroundResistance.setOnClickListener(this);
         butCarlibration.setOnClickListener(this);
         butOpenChart.setOnClickListener(this);
-
+        butDelectSD.setOnClickListener(this);
     }
     public void initChart(){
         SharedPreferences pre = mainActivity.getSharedPreferences("butState", 0);//打开文件
@@ -216,22 +219,22 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         if(ChartDataAnalysis.Curlists == null || ChartDataAnalysis.Curlists.size() == 0){
             ChartDataAnalysis.Curlists = ChartDataAnalysis.getSinData(0.2f,3f,100);
         }
-        ChartPlay.initChartView(lineChart_1,5,"","","电流(mA)/点号(号)");//初始化图表
-        ChartPlay.showLineChart(lineChart_1,ChartDataAnalysis.Curlists.get(0),"电流1", Color.RED,0);
-        ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(1),"电流2", Color.GREEN ,0);
-        ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(2),"电流3", Color.BLUE  ,0);       //ChartPlay.addLine(chartone,lists_1.get(3),"测道4", Color.TRANSPARENT ,10);
-        ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(3),"电流4", Color.YELLOW  ,0);       //ChartPlay.addLine(chartone,lists_1.get(3),"测道4", Color.TRANSPARENT ,10);
+        ChartPlay.initChartView(lineChart_1,5,"","","电压(mV)/点号(号)");//初始化图表
+        ChartPlay.showLineChart(lineChart_1,ChartDataAnalysis.Curlists.get(0),"电压1", Color.RED,0);
+        ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(1),"电压2", Color.GREEN ,0);
+        ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(2),"电压3", Color.BLUE  ,0);       //ChartPlay.addLine(chartone,lists_1.get(3),"测道4", Color.TRANSPARENT ,10);
+        ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(3),"电压4", Color.YELLOW  ,0);       //ChartPlay.addLine(chartone,lists_1.get(3),"测道4", Color.TRANSPARENT ,10);
 
         ArrayList<Float> List2 = null;
         if(ChartDataAnalysis.lists2 == null || ChartDataAnalysis.lists2.size()==0){
             List2 = ChartDataAnalysis.getSinData(1,1,3).get(0);
-            ChartPlay.initChartView(lineChart_2,3,"","","电流(mA)/通道号");//初始化图表
-            ChartPlay.showLineChart1(lineChart_2,List2,"电流曲线", Color.CYAN,0);
+            ChartPlay.initChartView(lineChart_2,3,"","","电压(mV)/通道号");//初始化图表
+            ChartPlay.showLineChart1(lineChart_2,List2,"电压曲线", Color.CYAN,0);
         }else{
             List2= ChartDataAnalysis.lists2;
             Log.e(TAG, "lists_2:" + List2.size());
-            ChartPlay.initChartView(lineChart_2,3,"","","电流(mA)/通道号");//初始化图表
-            ChartPlay.showLineChart1(lineChart_2,List2,"电流曲线", Color.CYAN,0);
+            ChartPlay.initChartView(lineChart_2,3,"","","电压(mV)/通道号");//初始化图表
+            ChartPlay.showLineChart1(lineChart_2,List2,"电压曲线", Color.CYAN,0);
             /*ChartPlay.showLineChart(charttwo,PositiveList2,"电压衰减曲线", Color.CYAN,1);
             ChartPlay.addLine(charttwo,NegativeList2,"电压衰减曲线(负)", Color.LTGRAY,1);*/
         }
@@ -261,7 +264,9 @@ public class LogFragment extends Fragment implements View.OnClickListener {
             mainActivity.logContent = "";
         }
         else if (id == R.id.controller_button_ground_resistance) {
-
+            // 接地电阻测试
+        } else if (id == R.id.button_delectsd) {
+            mainActivity.sendCommand(Constants.CMD_REQ_DELECT_SD);
         }
     }
 
@@ -277,75 +282,24 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         butGroundResistance.setEnabled(false);
         buttonUpdateConfigenableState=false;
 
-        String log = "->正在校准,Offset校准使能\n";
+        String log = "->正在校准\n";
         mainActivity.logAppend(log);
-        if(ip.equals("192.168.4.1")) {
             new Thread(new Runnable() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void run() {
-                    Socket socket = null;
+                    mainActivity.sendCommand(Constants.CMD_CALIBRA);
                     try {
-                        Date d = new Date();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-                        //获取当前日期，在配置命令中发送到下面去，让嵌入式建立文件
-                        String dateNowStr = sdf.format(d);
-
-                        //calibration/(offset/gain/NULL)+\r\n
-                        //mainActivity.sendCommand("config/"+SettingFragment.type_UI+"/"+SettingFragment.number_UI+"/"+1000+"/"+freControlID[SettingFragment.index]+"/"+dateNowStr+"/MMS-Data\r\n");
-                        Thread.currentThread().sleep(3000);
-                        mainActivity.sendCommand("calibration/offset\r\n");
-                        Log.e(TAG, "run: wificlientthread正在连接");
-                        socket = new Socket(ip, Constants.PORT);
-                        socket.setSoTimeout(6000);
-                        InputStream inputStream = socket.getInputStream();
-                        byte[] buffer = new byte[960];
-                        int bytes;
-                        File f = new File(Constants.DATA_DIRECTORY + "/" + "textData.dat");
-                        FileOutputStream fs=new FileOutputStream(f);
-                        while ((bytes=inputStream.read(buffer))!=-1){
-                            Log.e(TAG, "run: 进入校准接收" );
-                            fs.write(buffer,0,bytes);
-                            fs.flush();
-                        }
-                        fs.close();
-                        inputStream.close();
-                    } catch (SocketTimeoutException e) {
-                        e.printStackTrace();
-                        Log.e(TAG, "111111111111111111111111111111111111111112" );
-                        Message mes = new Message();
-                        mes.what = Constants.GET_TEXT_DATA;
-                        handler.sendMessage(mes);
-                        Log.e(TAG, "run: 超时" );
-                    }catch (IOException e) {
-                        Message message_b = new Message();
-                        message_b.what = Constants.GET_SERVER_IP;
-                        handler.sendMessage(message_b);
-                        Log.e(TAG, "run: yichang555555555555555");
-                        e.printStackTrace();
+                        Thread.currentThread().sleep(1000);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } finally {
-                        mainActivity.sendCommand(MainActivity.configCommend);
-                        try {
-                            Log.e(TAG, "run: 关闭流" );
-                            if (socket != null) {
-                                socket.close();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        throw new RuntimeException(e);
                     }
+                    Message mes = new Message();
+                    mes.what = Constants.CHANGE_CALIBRA;
+                    handler.sendMessage(mes);
                 }
             }).start();
-        }else{
-            butAquisition.setEnabled(true);
-            butSelfCheck.setEnabled(true);
-            butGroundResistance.setEnabled(true);
-            butCarlibration.setEnabled(true);
-            buttonUpdateConfigenableState=true;
-            mainActivity.logAppend("->"+"offset校准失败，请检查是否连接了仪器热点"+"\n");
-        }
+
     }
 
     //开始自检
@@ -462,10 +416,9 @@ public class LogFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {//碎片重新激活时调用
         SharedPreferences pre = mainActivity.getSharedPreferences("butState", 0);
-
-        String butCheckText = pre.getString("butCheckText", "开始自检");
+        String butCheckText = pre.getString("butCheckText", "仪器自检");
         String butAquiText = pre.getString("butAquiText", "开始采集");
-        String butGroundResistanceText = pre.getString("butGroundResistance", "开始采集");
+        String butGroundResistanceText = pre.getString("butGroundResistance", "接地电阻测试");
 
         //filenameview=pre.getString("txtFileName",Constants.DATA_DIRECTORY+"/"+"wrong.txt");
 
