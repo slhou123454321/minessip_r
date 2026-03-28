@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.example.minessip_r.Constants;
 import com.example.minessip_r.R;
 import com.example.minessip_r.ui.ResultActivity;
 
@@ -29,8 +30,9 @@ import java.util.Locale;
 public class DataFragment extends Fragment {
     private static String TAG = "DataFragment";
     // 文件目录路径
-    private static final String BASE_DIRECTORY =
-            Environment.getExternalStorageDirectory().getPath() + "/FEHelper";
+//    private static final String BASE_DIRECTORY =
+//            Environment.getExternalStorageDirectory().getPath() + "/FEHelper";
+    private static final String BASE_DIRECTORY = Constants.DATA_DIRECTORY;
 
     private ListView listView;
     private List<String> fileList = new ArrayList<>();

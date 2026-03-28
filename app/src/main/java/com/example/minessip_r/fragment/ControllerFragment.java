@@ -1,5 +1,6 @@
 package com.example.minessip_r.fragment;
 
+import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,16 +17,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-
 import com.example.minessip_r.Constants;
 import com.example.minessip_r.ParamSaveClass;
 import com.example.minessip_r.R;
 import com.example.minessip_r.ui.MainActivity;
-
 import java.util.Date;
 
 public class ControllerFragment extends Fragment implements View.OnClickListener,
@@ -436,6 +434,11 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
      * 保存所有配置
      */
     private void saveAllConfig() {
+        //通到选择
+        String channelInfo = getSelectedChannelsString();
+        SharedPreferences.Editor pre = mainActivity.getSharedPreferences("butState", 0).edit();
+        pre.putString("channelInfo", channelInfo);
+        pre.commit();
         // 更新实例变量
         updateInstanceVariablesFromUI();
 
@@ -459,7 +462,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
                         "工区名: %s\n" +
                         "文件名: %s",
                 getSPS,
-                getSelectedChannelsString(),
+                channelInfo,
                 getDacValueString(),
                 getDacFrequencyString(),
                 isDacOutputOpen ? "打开" : "关闭",
@@ -538,6 +541,11 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
         isDacOutputEnabled = isDacOutputOpen;
         selectedDacChannels = getSelectedChannelsString();
 
+        if(isDacOutputOpen)
+            dotNumber = 250;
+        else
+            dotNumber = 4*getSPS;
+
         // 低功耗模式状态已在 applyLowPowerMode 中更新
 
         // 更新文件名
@@ -579,8 +587,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
         if (viewId == R.id.adc_sampling_spinner) {
             if (position >= 0 && position < samplingArr.length) {
                 getSPS = samplingArr[position];
-                dotNumber = 4*getSPS;
-                Log.d(TAG, "ADC采样率: " + getSPS + " SPS");
+                Log.d(TAG, "ADC采样率: " + getSPS + " SPS   dotNumber: " + dotNumber);
             }
         }
         // 处理DAC输出值选择

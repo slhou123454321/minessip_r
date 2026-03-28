@@ -44,7 +44,7 @@ public class Constants {
 
     public static int fragmentState = 0;//用来判断当前页面是否为logframent，防止更新文件接收进度信息时程序崩溃
 
-    public static String DATA_DIRECTORY = Environment.getExternalStorageDirectory().getPath() +"/MineSSIP_R";
+    public static String DATA_DIRECTORY = Environment.getExternalStorageDirectory() +"/MineSSIP_R";
 
 
 }

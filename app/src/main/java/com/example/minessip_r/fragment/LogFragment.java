@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.icu.text.SimpleDateFormat;
 import android.net.DhcpInfo;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -20,12 +19,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-
 import com.example.minessip_r.ChartDataAnalysis;
 import com.example.minessip_r.Constants;
 import com.example.minessip_r.R;
@@ -33,20 +32,12 @@ import com.example.minessip_r.WifiClientThread;
 import com.example.minessip_r.chart.ChartPlay;
 import com.example.minessip_r.ui.MainActivity;
 import com.github.mikephil.charting.charts.LineChart;
-
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
-import java.util.Date;
 
-
-public class LogFragment extends Fragment implements View.OnClickListener {
+public class LogFragment extends Fragment implements View.OnClickListener,CompoundButton.OnCheckedChangeListener {
 
     private MainActivity mainActivity;
     private LineChart lineChart_1;
@@ -58,6 +49,8 @@ public class LogFragment extends Fragment implements View.OnClickListener {
     private Button butGroundResistance;
     private Button butOpenChart;
     private Button butDelectSD;
+
+    private CheckBox ch1,ch2,ch3,ch4;
 
     private TextView fileSize;
     private TextView[] TV_I=new TextView[4];
@@ -80,7 +73,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
             switch (msg.what) {
                 case Constants.FINISH_THREAD:
                     mainActivity.logAppend("->"+"采集结束！！！"+"\n");
-                    butAquisition.setText(R.string.button_start_aquisition);
+                    //butAquisition.setText(R.string.button_start_aquisition);
                     butAquisition.setText(R.string.button_start_aquisition);
                     mainActivity.controllerLayout.setEnabled(true);
                     mainActivity.dataLayout.setEnabled(true);
@@ -107,7 +100,10 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                     ChartPlay.showLineChart(lineChart_1,ChartDataAnalysis.Curlists.get(0),"电压1", Color.RED,0);
                     ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(1),"电压2", Color.GREEN ,0);
                     ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(2),"电压3", Color.BLUE  ,0);
-                    ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(3),"电压4", Color.YELLOW  ,0);
+                    ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(3),"电压4", Color.parseColor("#FF6200EE")  ,0);
+//                    for(int i=0; i< ChartDataAnalysis.Curlists.get(0).size();i++){
+//                        Log.e(TAG,"=====>" + ChartDataAnalysis.Curlists.get(0).get(i));
+//                    }
                     lineChart_1.invalidate();
                     lineChart_2.clear();
                     ChartPlay.initChartView(lineChart_2,3,"","","电压(mV)/通道号");//初始化图表
@@ -161,7 +157,6 @@ public class LogFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -197,6 +192,16 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         butOpenChart = (Button) mainActivity.findViewById(R.id.log_button_chart);
         butDelectSD = (Button) mainActivity.findViewById(R.id.button_delectsd);
         fileSize=mainActivity.findViewById(R.id.progress_text);
+
+        ch1 = (CheckBox) mainActivity.findViewById(R.id.ch_1);
+        ch2 = (CheckBox) mainActivity.findViewById(R.id.ch_2);
+        ch3 = (CheckBox) mainActivity.findViewById(R.id.ch_3);
+        ch4 = (CheckBox) mainActivity.findViewById(R.id.ch_4);
+        ch1.setOnCheckedChangeListener(this);
+        ch1.setOnCheckedChangeListener(this);
+        ch2.setOnCheckedChangeListener(this);
+        ch3.setOnCheckedChangeListener(this);
+        ch4.setOnCheckedChangeListener(this);
 
         butAquisition.setOnClickListener(this);
         butSelfCheck.setOnClickListener(this);
@@ -245,7 +250,8 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         ChartPlay.showLineChart(lineChart_1,ChartDataAnalysis.Curlists.get(0),"电压1", Color.RED,0);
         ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(1),"电压2", Color.GREEN ,0);
         ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(2),"电压3", Color.BLUE  ,0);       //ChartPlay.addLine(chartone,lists_1.get(3),"测道4", Color.TRANSPARENT ,10);
-        ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(3),"电压4", Color.YELLOW  ,0);       //ChartPlay.addLine(chartone,lists_1.get(3),"测道4", Color.TRANSPARENT ,10);
+        ChartPlay.addLine(lineChart_1,ChartDataAnalysis.Curlists.get(3),"电压4", Color.parseColor("#FF6200EE")  ,0);       //ChartPlay.addLine(chartone,lists_1.get(3),"测道4", Color.TRANSPARENT ,10);
+        lineChart_1.getLegend().setEnabled(false);
 
         ArrayList<Float> List2 = null;
         if(ChartDataAnalysis.lists2 == null || ChartDataAnalysis.lists2.size()==0){
@@ -264,31 +270,31 @@ public class LogFragment extends Fragment implements View.OnClickListener {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onClick(View v) {
-        int id = v.getId();
-
-        if (id == R.id.controller_button_calibration) {
-            butStartCarliClicked();
-        }
-        else if (id == R.id.controller_button_selfcheck) {
-            if (butSelfCheck.getText().toString().equals(mainActivity.getString(R.string.button_start_selfcheck)))
-                butStartSelfCheckClicked();
-            else
-                butStopSelfCheckClicked();
-        }
-        else if (id == R.id.controller_button_aquisition) {
-            if (butAquisition.getText().toString()
-                    .equals(mainActivity.getString(R.string.button_start_aquisition)))
-                butStartAquisitionClicked();
-            else
-                butStopAquisitionClicked();
-        }
-        else if (id == R.id.log_button_chart) {
-            mainActivity.logContent = "";
-        }
-        else if (id == R.id.controller_button_ground_resistance) {
-            // 接地电阻测试
-        } else if (id == R.id.button_delectsd) {
-            mainActivity.sendCommand(Constants.CMD_REQ_DELECT_SD);
+        switch (v.getId()){
+            case R.id.controller_button_calibration:
+                butStartCarliClicked();
+                break;
+            case R.id.controller_button_selfcheck:
+                if (butSelfCheck.getText().toString().equals(mainActivity.getString(R.string.button_start_selfcheck)))
+                    butStartSelfCheckClicked();
+                else
+                    butStopSelfCheckClicked();
+                break;
+            case R.id.controller_button_aquisition:
+                if (butAquisition.getText().toString()
+                        .equals(mainActivity.getString(R.string.button_start_aquisition)))
+                    butStartAquisitionClicked();
+                else
+                    butStopAquisitionClicked();
+                break;
+            case R.id.log_button_chart:
+                mainActivity.logContent = "";
+                break;
+            case R.id.controller_button_ground_resistance:// 接地电阻测试
+                break;
+            case R.id.button_delectsd:
+                mainActivity.sendCommand(Constants.CMD_REQ_DELECT_SD);
+                break;
         }
     }
 
@@ -326,17 +332,28 @@ public class LogFragment extends Fragment implements View.OnClickListener {
 
     //开始自检
     private void butStartSelfCheckClicked() {
-
+        startAcq(getString(R.string.button_start_selfcheck),
+                getString(R.string.button_stop_selfcheck));
     }
 
     //停止自检
     private void butStopSelfCheckClicked(){
-
+        stopAcq(getString(R.string.button_start_selfcheck));
     }
 
     //开始采集
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void butStartAquisitionClicked() {
+        startAcq(getString(R.string.button_start_aquisition),
+                getString(R.string.button_stop_aquisition));
+    }
+
+    //停止采集
+    private void butStopAquisitionClicked(){
+        stopAcq(getString(R.string.button_start_aquisition));
+    }
+
+    private void startAcq(String startTitle, String stopTitle){
         boolean test ;
         if (WifiClientThread.wifiTestFlag) {
             test = ip.equals("192.168.1.1");
@@ -348,7 +365,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         if(test) {
             wifiClientThread = new WifiClientThread(ip, handler,mainActivity);
             wifiClientThread.start();
-            butAquisition.setText(R.string.button_stop_aquisition);
+            butAquisition.setText(stopTitle);
             buttonUpdateConfigenableState = false;
             butCarlibration.setEnabled(false);
             butSelfCheck.setEnabled(false);
@@ -360,7 +377,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
             mainActivity.logLayout.setEnabled(false);
         }else{
             mainActivity.logAppend("->"+"仪器连接失败，请检查是否连接了仪器热点或蓝牙"+"\n");
-            butAquisition.setText("开始采集");
+            butAquisition.setText(startTitle);
             mainActivity.controllerLayout.setEnabled(true);
             mainActivity.dataLayout.setEnabled(true);
             mainActivity.logLayout.setEnabled(true);
@@ -373,8 +390,7 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    //停止采集
-    private void butStopAquisitionClicked(){
+    private void stopAcq(String startTitle){
         mainActivity.sendCommand(Constants.CMD_STOP);
         handler.obtainMessage(Constants.SET_LOG_MESSAGE,"发送停止命令："+Constants.CMD_STOP).sendToTarget();
         if (wifiClientThread!=null){
@@ -383,17 +399,16 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         /*DataAnalysisLzt.amplitude.clear();
         DataAnalysisLzt.pharse.clear();*/
         Log.e(TAG, "wifiClientThread==null1111"+(wifiClientThread==null));
-            butAquisition.setText(R.string.button_start_aquisition);
-            buttonUpdateConfigenableState = true;
-            butCarlibration.setEnabled(true);
-            butSelfCheck.setEnabled(true);
-            butGroundResistance.setEnabled(true);
-            lineChart_1.setTouchEnabled(true);
-            lineChart_2.setTouchEnabled(true);
-            mainActivity.controllerLayout.setEnabled(true);
-            mainActivity.dataLayout.setEnabled(true);
-            mainActivity.logLayout.setEnabled(true);
-
+        butAquisition.setText(startTitle);
+        buttonUpdateConfigenableState = true;
+        butCarlibration.setEnabled(true);
+        butSelfCheck.setEnabled(true);
+        butGroundResistance.setEnabled(true);
+        lineChart_1.setTouchEnabled(true);
+        lineChart_2.setTouchEnabled(true);
+        mainActivity.controllerLayout.setEnabled(true);
+        mainActivity.dataLayout.setEnabled(true);
+        mainActivity.logLayout.setEnabled(true);
     }
 
     @Override
@@ -462,6 +477,25 @@ public class LogFragment extends Fragment implements View.OnClickListener {
             butGroundResistance.setEnabled(true);
             buttonUpdateConfigenableState=true;
         }
+//        String channelInfo = pre.getString("channelInfo", "1/1/1/1/");
+//        if(!channelInfo.isEmpty()){
+//            String[] ch_arr = channelInfo.split("/");
+//            Log.e(TAG,"通道配置：" + channelInfo + "  个数：" + ch_arr.length);
+//            if(ch_arr.length >= 4){
+//                ch1.setEnabled(ch_arr[3].equals("1"));
+//                ch1.setChecked(ch_arr[3].equals("1"));
+//                SetChartOneVisible(ch1, 1, ch_arr[3].equals("1"));
+//                ch2.setEnabled(ch_arr[2].equals("1"));
+//                ch2.setChecked(ch_arr[2].equals("1"));
+//                SetChartOneVisible(ch2, 2, ch_arr[2].equals("1"));
+//                ch3.setEnabled(ch_arr[1].equals("1"));
+//                ch3.setChecked(ch_arr[1].equals("1"));
+//                SetChartOneVisible(ch3, 3, ch_arr[1].equals("1"));
+//                ch4.setEnabled(ch_arr[0].equals("1"));
+//                ch4.setChecked(ch_arr[0].equals("1"));
+//                SetChartOneVisible(ch4, 4, ch_arr[0].equals("1"));
+//            }
+//        }
         super.onResume();
     }
     @Override
@@ -508,6 +542,24 @@ public class LogFragment extends Fragment implements View.OnClickListener {
         intentFilter.addAction("android.net.wifi.WIFI_AP_STATE_CHANGED");
         intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         mainActivity.registerReceiver(new HotsspotReceiver(), intentFilter);
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+        switch (compoundButton.getId()){
+            case R.id.ch_1:
+                SetChartOneVisible(ch1, 1, isChecked);
+                break;
+            case R.id.ch_2:
+                SetChartOneVisible(ch1, 2, isChecked);
+                break;
+            case R.id.ch_3:
+                SetChartOneVisible(ch1, 3, isChecked);
+                break;
+            case R.id.ch_4:
+                SetChartOneVisible(ch1, 4, isChecked);
+                break;
+        }
     }
 
 
@@ -567,6 +619,14 @@ public class LogFragment extends Fragment implements View.OnClickListener {
                     }
                 }
             }
+        }
+    }
+
+    private void SetChartOneVisible(CheckBox checkBox, int ch_num, boolean isChecked){
+        Log.e(TAG,"曲线个数：" + lineChart_1.getLineData().getDataSetCount());
+        if(ch_num <= lineChart_1.getLineData().getDataSetCount()){
+            lineChart_1.getLineData().getDataSetByIndex(ch_num-1).setVisible(isChecked);
+            lineChart_1.invalidate();
         }
     }
 }

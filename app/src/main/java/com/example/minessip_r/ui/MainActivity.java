@@ -1,6 +1,7 @@
 package com.example.minessip_r.ui;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String currentDeviceName;
     private BluetoothChatService mChatService;
     private BluetoothAdapter mBluetoothAdapter;
+    private BluetoothDevice mDevice;
 
 
     public MenuItem itemConnect;
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static String configCommend="config/I/1uA/250/b9bf1a/123456/MMS-Data\r\n";
 
+    @SuppressLint("HandlerLeak")
     public final Handler mHandler = new Handler(){
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
@@ -163,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         setTabDisplay(0);
         XCrash.init(this);
-        Constants.DATA_DIRECTORY = getExternalFilesDir(null).getAbsolutePath() + "/MineSSIP_R";
+        //Constants.DATA_DIRECTORY = getExternalFilesDir(null).getAbsolutePath() + "/MineSSIP_R";
         if (WifiClientThread.wifiTestFlag) {
             Thread serverThread = new Thread(new Runnable() {
                 @Override
@@ -177,7 +180,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getpermissions()//运行时权限授权
     {
-        String[] permission=new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.BLUETOOTH,Manifest.permission.BLUETOOTH_ADMIN,Manifest.permission.BLUETOOTH_PRIVILEGED};
+        String[] permission=new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH_ADMIN,
+                Manifest.permission.BLUETOOTH_PRIVILEGED};
         for (int i=0;i<permission.length;i++) {
             if (ContextCompat.checkSelfPermission(MainActivity.this, permission[i]) != PackageManager.PERMISSION_GRANTED) {
                 if (Build.VERSION.SDK_INT >= 6.0) {
@@ -309,6 +317,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return mChatService.getState();
     }
 
+    public void reConnect(){
+        mChatService.connect(mDevice);
+    }
+
     public void displayToast(String string){
         runOnUiThread(() -> Toast.makeText(MainActivity.this, string, Toast.LENGTH_SHORT).show());
     }
@@ -366,9 +378,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (resultCode == Activity.RESULT_OK) {
                     String deviceAddress = data.getExtras().getString(ChooseDeviceActivity.DEVICE_ADDRESS);
                     currentDeviceName = data.getExtras().getString(ChooseDeviceActivity.DEVICE_NAME);
-                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceAddress);
-                    mChatService.connect(device);
-                    currentDeviceName = device.getName();
+                    mDevice = mBluetoothAdapter.getRemoteDevice(deviceAddress);
+                    mChatService.connect(mDevice);
+                    currentDeviceName = mDevice.getName();
                 }
                 if (resultCode == Activity.RESULT_CANCELED)
                     itemConnect.setEnabled(true);

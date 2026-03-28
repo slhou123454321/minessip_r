@@ -266,11 +266,12 @@ public class WifiClientThread extends Thread{
                     Log.e(TAG, "ChartDataAnalysis.ave.get(0) " + ChartDataAnalysis.ave.get(0));
                     Log.e(TAG, "ChartDataAnalysis.ave.get(1) " + ChartDataAnalysis.ave.get(1));
                     chartFinsh1 = false;
+                    Lists=ChartDataAnalysis.ave;
                     if(Lists!=null){
                         ChartDataAnalysis.errorLists = ChartDataAnalysis.getErrorLists(Lists.get(0),ChartDataAnalysis.ave.get(0));
                         ChartDataAnalysis.errorLists1 = ChartDataAnalysis.getErrorLists(Lists.get(1),ChartDataAnalysis.ave.get(1));
                     }
-                    Lists=ChartDataAnalysis.ave;
+
                     handler.obtainMessage(Constants.CHANGE_TABLE).sendToTarget();
                     handler.obtainMessage(Constants.SET_LOG_MESSAGE,"第"+times+"次采集完成\r\n").sendToTarget();
                     times++;
@@ -300,7 +301,25 @@ public class WifiClientThread extends Thread{
         if (!wifiTestFlag) {
             if (mainActivity.getBluetoothState() != BluetoothChatService.STATE_CONNECTED) {
                 //stopThreadFlag=true;
-                handler.obtainMessage(Constants.SET_LOG_MESSAGE, "命令发送失败，蓝牙连接断开\r\n").sendToTarget();
+                int reConnectCnt = 1;
+                handler.obtainMessage(Constants.SET_LOG_MESSAGE, "命令发送失败，蓝牙连接断开，重连中...\r\n").sendToTarget();
+                while (true){
+                    mainActivity.reConnect();
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if (mainActivity.getBluetoothState() != BluetoothChatService.STATE_CONNECTED){
+                        handler.obtainMessage(Constants.SET_LOG_MESSAGE, "第" + reConnectCnt + "次重连失败！\r\n").sendToTarget();
+                        reConnectCnt++;
+                    }
+                    if(reConnectCnt >= 4){
+                        stopThreadFlag=true;
+                        handler.obtainMessage(Constants.SET_LOG_MESSAGE, "重连次数已达到最大次数，请尝试重启程序和设备.\r\n").sendToTarget();
+                        break;
+                    }
+                }
             } else {
                 mainActivity.sendCommand(command);
             }

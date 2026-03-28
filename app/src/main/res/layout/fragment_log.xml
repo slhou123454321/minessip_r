@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".LogFragment">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,6 +24,50 @@
                     android:layout_height="match_parent"
                     android:visibility="visible"
                     android:background="@android:color/background_light" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/ch_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="电压1"
+                    android:textSize="11sp"
+                    android:textColor="#FF0000"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/ch_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="电压2"
+                    android:textSize="11sp"
+                    android:textColor="#00FF00"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/ch_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="电压3"
+                    android:textSize="11sp"
+                    android:textColor="#1259E7"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/ch_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="电压4"
+                    android:textSize="11sp"
+                    android:textColor="#FF6200EE"
+                    android:checked="true"/>
+
             </LinearLayout>
 
             <LinearLayout

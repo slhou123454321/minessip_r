@@ -226,8 +226,8 @@ public class ChartDataAnalysis {
         // 转换为电压（mV）
         float voltage = ((float) rawData) / 4294967296L * 5000.0f;
         // 霍尔传感器转换：电压(mV) → 电流
-        float current = voltage * 1000.0f / 62.5f;
-        return current;
+        //float current = voltage * 1000.0f / 62.5f;
+        return voltage;
     }
 
     /**
