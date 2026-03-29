@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         setTabDisplay(0);
         XCrash.init(this);
-        //Constants.DATA_DIRECTORY = getExternalFilesDir(null).getAbsolutePath() + "/MineSSIP_R";
+        Constants.DATA_DIRECTORY = getExternalFilesDir(null).getAbsolutePath() + "/MineSSIP_R";
         if (WifiClientThread.wifiTestFlag) {
             Thread serverThread = new Thread(new Runnable() {
                 @Override

@@ -231,7 +231,7 @@ public class ChartDataAnalysis {
     }
 
     /**
-     * 计算得到三个不同发送频率的电位值数据
+     * 计算得到三个不同发送频率的电位值数据，主频处
      * @param dataLists         进行fft以及后续计算的数据
      * @param signalFrequency   信号频率
      * @param sampleRate        采样率
@@ -256,6 +256,32 @@ public class ChartDataAnalysis {
         }
         return res;
     }
+
+    /**
+     * 方法2：获取目标频率处的FFT结果
+     * 调用executeSingleFFT方法，该方法返回指定频率处的复数
+     */
+    public static ArrayList<Complex> getTargetFrequencyFFT(ArrayList<ArrayList<Float>> dataLists,
+                                                           double targetFrequency,
+                                                           int sampleRate) {
+        ArrayList<Complex> res = new ArrayList<>();
+        for (int i = 0; i < dataLists.size(); i++) {
+            ArrayList<Float> a = dataLists.get(i);
+            double[] arr = new double[a.size()];
+            for (int j = 0; j < a.size(); j++) {
+                arr[j] = a.get(j);
+            }
+            if (a.size() == 0) {
+                res.add(new Complex(0, 0));
+                continue;
+            }
+            // 调用executeSingleFFT获取目标频率处的结果
+            Complex ui = executeSingleFFT(arr, a.size(), targetFrequency, sampleRate);
+            res.add(ui);
+        }
+        return res;
+    }
+
     /**
      * 进行傅里叶变换，并获得傅里叶变换之后的复数值
      * @param firstChannelFFT  进行fft的数据
@@ -275,24 +301,13 @@ public class ChartDataAnalysis {
         int count = (int) Math.round(signalFrequency/ signalResolution);
         double im = firstChannelFFT[count * 2 + 1];
         double re = firstChannelFFT[count * 2];
-
-       /* Log.e("FFT","count:"+count);
-        FFTlists.clear();
-        for(int i=0;i * 2 + 1<firstChannelFFT.length;i++){
-            double im1 = firstChannelFFT[i * 2 + 1];
-            double re1 = firstChannelFFT[i * 2];
-            Float max= (float)Math.sqrt(re1 * re1 + im1 * im1) / (firstChannelFFT.length / 2);
-            FFTlists.add(max);
-            SetFFTFile(max+"");
-            Log.e("FFT","i:"+i+"   max:"+max);
-        }*/
-
-        Complex Ui = new Complex(re,im);
-        System.out.println(signalFrequency+"Hz信号幅值为："+Math.sqrt(re * re + im * im) / (firstChannelFFT.length / 2));
-        System.out.println();
-        // Log.d("实部虚部", "GETrun: "+"im:"+im+"re:"+re);
-        //Log.d("幅度值", "GETrun: "+(float) Math.sqrt(re * re + im * im)/(firstChannelFFT.length / 2));
-        //Log.d("相位", "GETrun: "+Math.atan2(im,re)/Math.PI*180);
+        // Complex Ui = new Complex(re,im);
+        Complex res = new Complex(re,im);
+        Complex temp = new Complex(firstChannelFFT.length/2,0);
+        Complex Ui = res.div(temp);
+        Log.d("GETrun", "实部虚部: "+"im:"+im+"re:"+re);
+        Log.d("GETrun", "幅度值: "+(float) Math.sqrt(re * re + im * im)/(firstChannelFFT.length / 2));
+        Log.d("GETrun", "相位: "+Math.atan2(im,re)/Math.PI*180);
         return Ui;
     }
 

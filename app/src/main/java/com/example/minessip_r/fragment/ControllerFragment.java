@@ -534,7 +534,6 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
     private void updateStaticVariables() {
         // 更新ADC采样率
         getSPS = this.getSPS;
-
         // 更新DAC配置
         dacOutputValue = selectedDacValue;
         dacOutputFrequency = selectedDacFrequency;
@@ -542,7 +541,7 @@ public class ControllerFragment extends Fragment implements View.OnClickListener
         selectedDacChannels = getSelectedChannelsString();
 
         if(isDacOutputOpen)
-            dotNumber = 250;
+            dotNumber = (int) Math.round(16*getSPS/dacOutputFrequency);
         else
             dotNumber = 4*getSPS;
 

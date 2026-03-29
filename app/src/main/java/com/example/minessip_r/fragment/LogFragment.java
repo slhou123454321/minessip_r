@@ -333,7 +333,7 @@ public class LogFragment extends Fragment implements View.OnClickListener,Compou
     //开始自检
     private void butStartSelfCheckClicked() {
         startAcq(getString(R.string.button_start_selfcheck),
-                getString(R.string.button_stop_selfcheck));
+                getString(R.string.button_stop_selfcheck), false);
     }
 
     //停止自检
@@ -345,7 +345,7 @@ public class LogFragment extends Fragment implements View.OnClickListener,Compou
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void butStartAquisitionClicked() {
         startAcq(getString(R.string.button_start_aquisition),
-                getString(R.string.button_stop_aquisition));
+                getString(R.string.button_stop_aquisition), true);
     }
 
     //停止采集
@@ -353,7 +353,7 @@ public class LogFragment extends Fragment implements View.OnClickListener,Compou
         stopAcq(getString(R.string.button_start_aquisition));
     }
 
-    private void startAcq(String startTitle, String stopTitle){
+    private void startAcq(String startTitle, String stopTitle, boolean isAcq){
         boolean test ;
         if (WifiClientThread.wifiTestFlag) {
             test = ip.equals("192.168.1.1");
@@ -363,7 +363,7 @@ public class LogFragment extends Fragment implements View.OnClickListener,Compou
         // if(ip.equals("192.168.4.1")&&mainActivity.itemConnect.getTitle().equals("断开")) {
         // todo WiFi自测
         if(test) {
-            wifiClientThread = new WifiClientThread(ip, handler,mainActivity);
+            wifiClientThread = new WifiClientThread(ip, handler,mainActivity, isAcq);
             wifiClientThread.start();
             butAquisition.setText(stopTitle);
             buttonUpdateConfigenableState = false;

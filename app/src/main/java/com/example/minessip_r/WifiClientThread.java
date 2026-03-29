@@ -35,6 +35,7 @@ public class WifiClientThread extends Thread{
     private Socket socket=null;
     private String ip;
     private Handler handler;
+    private boolean isAcq;
     private InputStream inputStream;
     private MainActivity mainActivity;
     private FileInputStream fis;
@@ -48,11 +49,12 @@ public class WifiClientThread extends Thread{
 
     public static boolean wifiTestFlag = false;
 
-    public WifiClientThread(String ip, Handler handler, MainActivity mainActivity) {
+    public WifiClientThread(String ip, Handler handler, MainActivity mainActivity, boolean isAcq) { // isAcq:true:采集。false:自检
         Log.e("AAA","ClientThread开启");
         this.ip = ip;
         this.handler = handler;
         this.mainActivity=mainActivity;
+        this.isAcq = isAcq;
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -248,7 +250,14 @@ public class WifiClientThread extends Thread{
                     handler.obtainMessage(Constants.SET_LOG_MESSAGE,"数据接收不足,重新开始采集").sendToTarget();
                 }else{
                     ChartDataAnalysis.Curlists = ChartDataAnalysis.binaryToDecimal(filename);//电压
-                    ArrayList<Complex> temp=ChartDataAnalysis.getSingleFFTarray(ChartDataAnalysis.Curlists,ControllerFragment.signalFrequency,ControllerFragment.getSPS,ControllerFragment.dotNumber);
+                    ArrayList<Complex> temp;
+                    // 自检且DAC打开时取DAC输出频率的幅值相位
+                    if (!isAcq && ControllerFragment.isDacOutputEnabled) {
+                        temp=ChartDataAnalysis.getTargetFrequencyFFT(ChartDataAnalysis.Curlists,ControllerFragment.dacOutputFrequency,ControllerFragment.getSPS);
+                    } else {
+                        // 其他情况取主频
+                        temp=ChartDataAnalysis.getSingleFFTarray(ChartDataAnalysis.Curlists,ControllerFragment.dacOutputFrequency,ControllerFragment.getSPS,ControllerFragment.dotNumber);
+                    }
                     for(int i=0;i<temp.size();i++){
                         // handler.obtainMessage(Constants.SET_LOG_MESSAGE,"计算前："+temp.get(i).toString()+"\r\n").sendToTarget();
                         Complex avetemp = temp.get(i).div(new Complex(1,0));//用最后一组电压值计算电流
